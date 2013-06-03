@@ -9,6 +9,7 @@ namespace DataAccess.Interfaces
         IDbTransaction TransientTransaction { get; }
         void Commit();
         void Rollback();
-        void RollbackDispose();
+        void RollbackAndDisposeConnection();
+        void CommitAndDisposeConnection();
     }
 }

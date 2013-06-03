@@ -7,7 +7,7 @@ namespace DataAccess.TestHelpers
     public class TransactionalTestFixture
     {
         protected virtual string ConnectionString { get; set; }
-        protected virtual IUnitOfWork UnitOfWork { get; set; }
+        protected virtual IUnitOfWork Transaction { get; set; }
         protected virtual DataAccessStructureMapWireUp DataAccessStructureMapWireUp { get; set; }
 
         [TestFixtureSetUp]
@@ -15,14 +15,13 @@ namespace DataAccess.TestHelpers
         {
             DataAccessStructureMapWireUp = new DataAccessStructureMapWireUp();
             DataAccessStructureMapWireUp.Initialise(ObjectFactory.Container, ConnectionString);
-            UnitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
+            Transaction = ObjectFactory.GetInstance<IUnitOfWork>();
         }
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
-            UnitOfWork.Rollback();
-            UnitOfWork.Dispose();
+            Transaction.RollbackAndCloseConnection();
         }
     }
 }

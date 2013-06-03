@@ -17,8 +17,8 @@ namespace DataAccess.Unit.Tests
             //Then
             Assert.That(dataQuery.CommandText, Is.EqualTo("command text"));
             Assert.That(dataQuery.CommandType, Is.EqualTo(CommandType.Text));
-            Assert.That(dataQuery.Parameters["Title"], Is.EqualTo("Mr"));
-            Assert.That(dataQuery.Parameters["Name"], Is.EqualTo("David"));
+            Assert.That(dataQuery.Parameters["Title"].Value, Is.EqualTo("Mr"));
+            Assert.That(dataQuery.Parameters["Name"].Value, Is.EqualTo("David"));
         }
 
         [Test]
@@ -33,8 +33,8 @@ namespace DataAccess.Unit.Tests
             //Then
             Assert.That(dataQuery.CommandText, Is.EqualTo("command text"));
             Assert.That(dataQuery.CommandType, Is.EqualTo(CommandType.StoredProcedure));
-            Assert.That(dataQuery.Parameters["Title"], Is.EqualTo("Mr"));
-            Assert.That(dataQuery.Parameters["Name"], Is.EqualTo("David"));
+            Assert.That(dataQuery.Parameters["Title"].Value, Is.EqualTo("Mr"));
+            Assert.That(dataQuery.Parameters["Name"].Value, Is.EqualTo("David"));
         }
     }
 }

@@ -6,9 +6,9 @@ namespace DataAccess
 {
     public class DataQuery : IDataQuery
     {
-        private IDictionary<string, object> _parameters = new Dictionary<string, object>();
+        private IDictionary<string, IDataParam> _parameters = new Dictionary<string, IDataParam>();
         public string CommandText { get; set; }
-        public IDictionary<string, object> Parameters
+        public IDictionary<string, IDataParam> Parameters
         {
             get { return _parameters; }
             set { _parameters = value; }
@@ -18,7 +18,7 @@ namespace DataAccess
 
         public DataQuery AddParam(string name, object value)
         {
-            _parameters.Add(name, value);
+            _parameters.Add(name, new DataParam { Value = value });
             return this;
         }
 

@@ -67,9 +67,9 @@ namespace DataAccess.Unit.Tests
 
             //Then
             _dataParameter.VerifySet(x => x.ParameterName = "Title", Times.Once());
-            _dataParameter.VerifySet(x => x.Value = "Mr", Times.Once());
+            _dataParameter.VerifySet(x => x.Value =  "Mr", Times.Once());
             _dataParameter.VerifySet(x => x.ParameterName = "FirstName", Times.Once());
-            _dataParameter.VerifySet(x => x.Value = "David", Times.Once());
+            _dataParameter.VerifySet(x => x.Value =  "David", Times.Once());
             _dataParameter.VerifySet(x => x.ParameterName = "Surname", Times.Once());
             _dataParameter.VerifySet(x => x.Value = "Miranda", Times.Once());
         }

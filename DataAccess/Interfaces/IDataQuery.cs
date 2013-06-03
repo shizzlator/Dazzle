@@ -6,7 +6,7 @@ namespace DataAccess.Interfaces
     public interface IDataQuery
     {
         string CommandText { get; set; }
-        IDictionary<string, object> Parameters { get; set; }
+        IDictionary<string, IDataParam> Parameters { get; set; }
         CommandType CommandType { get; set; }
     }
 }

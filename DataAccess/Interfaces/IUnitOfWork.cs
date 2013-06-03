@@ -6,5 +6,6 @@ namespace DataAccess.Interfaces
         T Repository<T>() where T : IRepository;
         void Rollback();
         void Dispose();
+        void RollbackAndCloseConnection();
     }
 }

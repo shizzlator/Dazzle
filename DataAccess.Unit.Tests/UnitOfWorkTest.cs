@@ -8,7 +8,6 @@ namespace DataAccess.Unit.Tests
     public class UnitOfWorkTest
     {
         private Mock<IObjectContainer> _iocContainer;
-        private Mock<IDatabaseSession> _databaseSession;
         private TestRepository _expectedRepository;
         private UnitOfWork _unitOfWork;
         private Mock<ITransactionManager> _transactionManager;
@@ -17,7 +16,6 @@ namespace DataAccess.Unit.Tests
         public void SetUp()
         {
             _iocContainer = new Mock<IObjectContainer>();
-            _databaseSession = new Mock<IDatabaseSession>();
             _expectedRepository = new TestRepository();
             _transactionManager = new Mock<ITransactionManager>();
             _unitOfWork = new UnitOfWork(_iocContainer.Object, _transactionManager.Object);
@@ -43,7 +41,7 @@ namespace DataAccess.Unit.Tests
             _iocContainer.Setup(x => x.GetInstanceOf<TestRepository>()).Returns(_expectedRepository);
 
             //When
-            var testRepository = _unitOfWork.Repository<TestRepository>();
+            _unitOfWork.Repository<TestRepository>();
 
             //Then
             _transactionManager.Verify(x => x.Begin(), Times.Once());

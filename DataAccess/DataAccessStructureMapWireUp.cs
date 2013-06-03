@@ -1,5 +1,4 @@
 ﻿using DataAccess.Interfaces;
-using DataAccess.Temp;
 using StructureMap;
 
 namespace DataAccess
@@ -14,7 +13,6 @@ namespace DataAccess
             container.Configure(x => x.For<IDatabaseConnectionProvider>().Use<SqlConnectionProvider>().Ctor<string>("connectionString").Is(connectionString));
             container.Configure(x => x.For<ITransactionManager>().Use<TransactionManager>());
             container.Configure(x => x.For<IDataQueryBuilder>().Use<DataQueryBuilder>());
-            container.Configure(x => x.For<IContactRepository>().Use<ContactRepository>());
             container.Configure(x => x.For<IUnitOfWork>().Use<UnitOfWork>());
             container.Configure(x => x.For<IObjectContainer>().Use<ObjectContainer>());
         }

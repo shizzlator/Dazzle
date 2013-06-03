@@ -1,4 +1,4 @@
-namespace DataAccess.Temp
+namespace ExampleUsages.DTOs
 {
     public class Contact
     {

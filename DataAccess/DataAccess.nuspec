@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+	<title>Data Access</title>
+    <version>$version$</version>
+    <authors>David Miranda</authors>
+    <owners>Totaljobs Group</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Testable Data Access Layer</description>
+	<dependencies> 
+	   <group targetFramework="net35">
+		  <dependency id="structuremap" />
+	   </group>
+   </dependencies>
+  </metadata>
+</package>

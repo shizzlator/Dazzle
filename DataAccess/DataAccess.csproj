@@ -9,9 +9,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataAccess</RootNamespace>
     <AssemblyName>DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,25 +34,28 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap">
+    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccessStructureMapWireUp.cs" />
     <Compile Include="DatabaseSession.cs" />
+    <Compile Include="DataParam.cs" />
     <Compile Include="DataQuery.cs" />
     <Compile Include="DatabaseCommandFactory.cs" />
     <Compile Include="DataQueryBuilder.cs" />
@@ -55,6 +63,7 @@
     <Compile Include="Interfaces\IConfig.cs" />
     <Compile Include="Interfaces\IDatabaseConnectionProvider.cs" />
     <Compile Include="Interfaces\IDatabaseSession.cs" />
+    <Compile Include="Interfaces\IDataParam.cs" />
     <Compile Include="Interfaces\IDataQuery.cs" />
     <Compile Include="Interfaces\IDataQueryBuilder.cs" />
     <Compile Include="Interfaces\IDatabaseCommandFactory.cs" />
@@ -67,16 +76,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryParameters.cs" />
     <Compile Include="SqlConnectionProvider.cs" />
-    <Compile Include="Temp\Contact.cs" />
-    <Compile Include="Temp\ContactRepository.cs" />
-    <Compile Include="Temp\IContactRepository.cs" />
+    <Compile Include="TestHelpers\FakeDataQueryBuilder.cs" />
     <Compile Include="TestHelpers\TransactionalTestFixture.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DataAccess.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

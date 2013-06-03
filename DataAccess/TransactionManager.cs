@@ -40,38 +40,45 @@ namespace DataAccess
 
         public void Rollback()
         {
-            _transientTransaction.Rollback();
-            _transientTransaction.Dispose();
-            _transientTransaction = null;
+            if (TransactionInProgress)
+            {
+                _transientTransaction.Rollback();
+                _transientTransaction.Dispose();
+                _transientTransaction = null;
+            }
         }
 
         public bool TransactionInProgress { get { return _transientTransaction != null; } }
 
-        public void CommitDispose()
+        public void CommitAndDisposeConnection()
         {
             try
             {
                 _transientTransaction.Commit();
-                _transientTransaction.Connection.Dispose();
                 _transientTransaction.Dispose();
                 _transientTransaction = null;
+                _databaseConnectionProvider.GetOpenConnection().Dispose();
             }
             catch (Exception)
             {
-                Rollback();
+                RollbackAndDisposeConnection();
                 throw;
             }
         }
 
-        public void RollbackDispose()
+        public void RollbackAndDisposeConnection()
         {
             if (TransactionInProgress)
             {
                 _transientTransaction.Rollback();
-                _transientTransaction.Connection.Dispose();
                 _transientTransaction.Dispose();
+                _transientTransaction = null;
+                _databaseConnectionProvider.GetOpenConnection().Dispose();
             }
-            _transientTransaction = null;
+            else
+            {
+                _databaseConnectionProvider.GetOpenConnection().Dispose();
+            }
         }
     }
 }

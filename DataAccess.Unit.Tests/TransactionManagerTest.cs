@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Threading;
 using DataAccess.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -19,15 +21,15 @@ namespace DataAccess.Unit.Tests
             _databaseConnectionProvider = new Mock<IDatabaseConnectionProvider>();
             _transientTransaction = new Mock<IDbTransaction>();
             _connection = new Mock<IDbConnection>();
-            _transientTransaction.Setup(x => x.Connection).Returns(_connection.Object);
-            _databaseConnectionProvider.Setup(x => x.GetOpenConnection().BeginTransaction()).Returns(_transientTransaction.Object);
+            _databaseConnectionProvider.Setup(x => x.GetOpenConnection()).Returns(_connection.Object);
+            _connection.Setup(x => x.BeginTransaction()).Returns(_transientTransaction.Object);
             _transactionManager = new TransactionManager(_databaseConnectionProvider.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
-            _transactionManager.RollbackDispose();
+            _transactionManager.RollbackAndDisposeConnection();
         }
 
         [Test]
@@ -47,7 +49,7 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Begin();
 
             //Then
-            _databaseConnectionProvider.Verify(x => x.GetOpenConnection().BeginTransaction(), Times.Once());
+            _connection.Verify(x=> x.BeginTransaction(), Times.Once());
         }
 
         [Test]
@@ -62,6 +64,55 @@ namespace DataAccess.Unit.Tests
             //Then
             _transientTransaction.Verify(x => x.Commit(), Times.Once());
             _transientTransaction.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(Exception), ExpectedMessage = "commit failed")]
+        public void ShouldRollbackTransactionWhenCommitFails()
+        {
+            //Given
+            _transactionManager.Begin();
+            _transientTransaction.Setup(x => x.Commit()).Throws(new Exception("commit failed"));
+
+            //When
+            _transactionManager.CommitAndDisposeConnection();
+
+            //Then
+            _transientTransaction.Verify(x => x.Commit(), Times.Once());
+            _transientTransaction.Verify(x => x.Rollback(), Times.Once());
+            _connection.Verify(x => x.Dispose(), Times.Never());
+        }
+
+        [Test]
+        public void ShouldCommitTransactionAndDisposeConnection()
+        {
+            //Given
+            _transactionManager.Begin();
+
+            //When
+            _transactionManager.CommitAndDisposeConnection();
+
+            //Then
+            _transientTransaction.Verify(x => x.Commit(), Times.Once());
+            _transientTransaction.Verify(x => x.Dispose(), Times.Once());
+            _connection.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(Exception), ExpectedMessage = "commit failed")]
+        public void ShouldRollbackTransactionAndDisposeConnectionWhenCommitFails()
+        {
+            //Given
+            _transactionManager.Begin();
+            _transientTransaction.Setup(x => x.Commit()).Throws(new Exception("commit failed"));
+
+            //When
+            _transactionManager.CommitAndDisposeConnection();
+
+            //Then
+            _transientTransaction.Verify(x => x.Commit(), Times.Once());
+            _transientTransaction.Verify(x => x.Rollback(), Times.Once());
+            _connection.Verify(x => x.Dispose(), Times.Once());
         }
 
         [Test]
@@ -85,17 +136,17 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Begin();
             _transactionManager.Begin();
 
-            _databaseConnectionProvider.Verify(x => x.GetOpenConnection().BeginTransaction(), Times.Once());
+            _connection.Verify(x => x.BeginTransaction(), Times.Once());
         }
 
         [Test]
-        public void ShouldRollbackAndDisposeTransaction()
+        public void ShouldRollbackAndDisposeConnection()
         {
             //Given
             _transactionManager.Begin();
 
             //When
-            _transactionManager.RollbackDispose();
+            _transactionManager.RollbackAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Rollback(), Times.Once());
@@ -111,11 +162,40 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Commit();
 
             //When
-            _transactionManager.RollbackDispose();
+            _transactionManager.RollbackAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Rollback(), Times.Never());
             _transientTransaction.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        public void ShouldDisposeConnectionOnRollbackEvenWhenNoTransactionInProgress()
+        {
+            //Given
+            _transactionManager.Begin();
+            _transactionManager.Rollback(); //kills off the underlying transaction
+
+            //When
+            _transactionManager.RollbackAndDisposeConnection();
+
+            //Then
+            _connection.Verify(x => x.Dispose(), Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ShouldDisposeConnectionOnCommitEvenWhenNoTransactionInProgress()
+        {
+            //Given
+            _transactionManager.Begin();
+            _transactionManager.Rollback(); //kills off the underlying transaction
+
+            //When
+            _transactionManager.CommitAndDisposeConnection();
+
+            //Then
+            _connection.Verify(x => x.Dispose(), Times.Once());
         }
     }
 }

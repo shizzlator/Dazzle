@@ -9,7 +9,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Integration.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E2526697-489B-4CD5-9F93-EA8AB52F5718}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleUsages", "ExampleUsages\ExampleUsages.csproj", "{99B06BC9-5015-4286-A95C-F3AB88D28D67}"
+EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.tjgdev.ds:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DataAccess.Integration.Tests\\DataAccess.Integration.Tests.csproj
+		SccProjectTopLevelParentUniqueName1 = DataAccess.sln
+		SccProjectName1 = DataAccess.Integration.Tests
+		SccLocalPath1 = DataAccess.Integration.Tests
+		SccProjectUniqueName2 = DataAccess.Unit.Tests\\DataAccess.Unit.Tests.csproj
+		SccProjectTopLevelParentUniqueName2 = DataAccess.sln
+		SccProjectName2 = DataAccess.Unit.Tests
+		SccLocalPath2 = DataAccess.Unit.Tests
+		SccProjectUniqueName3 = DataAccess\\DataAccess.csproj
+		SccProjectName3 = DataAccess
+		SccLocalPath3 = DataAccess
+		SccProjectUniqueName4 = ExampleUsages\\ExampleUsages.csproj
+		SccProjectTopLevelParentUniqueName4 = DataAccess.sln
+		SccProjectName4 = ExampleUsages
+		SccLocalPath4 = ExampleUsages
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -27,12 +50,17 @@ Global
 		{C0748080-B2F5-4837-99BE-0F122C13022D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0748080-B2F5-4837-99BE-0F122C13022D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0748080-B2F5-4837-99BE-0F122C13022D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7E099D37-E1C6-41F4-AED7-C7021D6E3239} = {E2526697-489B-4CD5-9F93-EA8AB52F5718}
 		{C0748080-B2F5-4837-99BE-0F122C13022D} = {E2526697-489B-4CD5-9F93-EA8AB52F5718}
+		{7E099D37-E1C6-41F4-AED7-C7021D6E3239} = {E2526697-489B-4CD5-9F93-EA8AB52F5718}
+		{99B06BC9-5015-4286-A95C-F3AB88D28D67} = {E2526697-489B-4CD5-9F93-EA8AB52F5718}
 	EndGlobalSection
 EndGlobal

@@ -27,7 +27,8 @@ namespace DataAccess
             }
             catch(Exception)
             {
-                _transactionManager.Rollback();
+                if(_transactionManager.TransactionInProgress)
+                    _transactionManager.Rollback();
                 //TODO: Log Exception
                 throw;
             }
@@ -44,7 +45,27 @@ namespace DataAccess
             }
             catch (Exception)
             {
-                _transactionManager.Rollback();
+                if (_transactionManager.TransactionInProgress)
+                    _transactionManager.Rollback();
+                //TODO: Log Exception
+                throw;
+            }
+        }
+
+        public IDataParameter RunUpdateCommandFor(IDataQuery dataQuery, string outputDataParameter)
+        {
+            try
+            {
+                using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
+                {
+                    dbCommand.ExecuteNonQuery();
+                    return (IDataParameter)dbCommand.Parameters[outputDataParameter];
+                }
+            }
+            catch (Exception)
+            {
+                if (_transactionManager.TransactionInProgress)
+                    _transactionManager.Rollback();
                 //TODO: Log Exception
                 throw;
             }

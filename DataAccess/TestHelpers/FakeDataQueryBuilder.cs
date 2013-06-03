@@ -1,19 +1,22 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.TestHelpers
 {
-    public class DataQueryBuilder : IDataQueryBuilder
+    public class FakeDataQueryBuilder : IDataQueryBuilder
     {
-        private readonly IDictionary<string, IDataParam> _parameters = new Dictionary<string, IDataParam>();
-        private string _commandText;
+        public IDictionary<string, IDataParam> Parameters { get; private set; }
+        public string CommandText { get; set; }
+
+        public FakeDataQueryBuilder()
+        {
+            Parameters = new Dictionary<string, IDataParam>();
+        }
 
         public IDataQueryBuilder WithCommandText(string commandText)
         {
-            _commandText = commandText;
-            _parameters.Clear();
+            CommandText = commandText;
             return this;
         }
 
@@ -29,22 +32,18 @@ namespace DataAccess
 
         public IDataQueryBuilder WithParam(string name, object value, ParameterDirection? direction, int? size, SqlDbType? type)
         {
-            if (value == null)
-            {
-                value = DBNull.Value;
-            }
-            _parameters.Add(name, new DataParam { Value = value, Direction = direction, Size = size, Type = type});
+            Parameters.Add(name, new DataParam { Value = value, Direction = direction, Size = size, Type = type });
             return this;
         }
 
         public IDataQuery BuildStoredQuery()
         {
-            return new DataQuery { Parameters = _parameters, CommandType = CommandType.StoredProcedure, CommandText = _commandText };
+            return new DataQuery();
         }
 
         public IDataQuery BuildTextQuery()
         {
-            return new DataQuery {Parameters = _parameters, CommandType = CommandType.Text, CommandText = _commandText};
+            return new DataQuery();
         }
     }
 }

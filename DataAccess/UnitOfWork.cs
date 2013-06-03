@@ -32,9 +32,14 @@ namespace DataAccess
             _transactionManager.Rollback();
         }
 
+        public void RollbackAndCloseConnection()
+        {
+            _transactionManager.RollbackAndDisposeConnection();
+        }
+
         public void Dispose()
         {
-            _transactionManager.RollbackDispose();
+            _transactionManager.Rollback();
         }
     }
 }
