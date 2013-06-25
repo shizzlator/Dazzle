@@ -1,16 +1,30 @@
-using System.Data;
-using System.Data.SqlClient;
-using DataAccess;
-using DataAccess.Interfaces;
-using ExampleUsages.DTOs;
-using ExampleUsages.Repositories.Interfaces;
+       _,,--,,_        
+     /`       .`\      
+    /  '  _.-'   \     
+    |  `'_{}_    |     
+    |  /`    `\  |     
+     \/ ==  == \/      
+     /| (.)(.) |\      The Swamy says:
+     \|  __)_  |/      READ THIS SHIZZLE!!
+      |\/____\/|       
+      | ` ~~ ` |       
+      \        /       
+       `.____.`   
 
-namespace ExampleUsages.Repositories
-{
-    public class ContactRepository : IContactRepository, IRepository
+Below is an example repository. (also found in the library project). 
+It shows a few ways in which you can execute queries.
+
+If you want to run things within a transaction then you should use the UnitOfWork class:
+- This will wrap anything you do with a transaction - _unitOfWork.Repository<MyRepo>().MyMethod()
+- Remember to call Commit()/Rollback() on the UnitOfWork when you are done.
+- There is also a TransactionalTestFixture included.
+- Inherit from this if you want your integration tests to rollback when they are complete (override the connection string prop)
+- HAVE A LOOK AT THE ACTUAL DATAACCES PROJECT https://github.com/shizzlator/DataAccess for a better understanding!
+
+
+public class ContactRepository : IContactRepository, IRepository
     {
         private readonly IDatabaseSession _dbSession;
-
         private readonly IDataQueryBuilder _dataQueryBuilder;
 
         public ContactRepository(IDatabaseSession dbSession, IDataQueryBuilder dataQueryBuilder)
@@ -58,7 +72,6 @@ namespace ExampleUsages.Repositories
         }
 
         //SIMPLE GET - Using DataQueryBuilder
-
         public Contact Get(int contactId)
         {
             var reader = _dbSession.RunReaderFor
@@ -73,7 +86,6 @@ namespace ExampleUsages.Repositories
         }
 
         //INLINE PARAMETERISED QUERY
-
         public Contact RunQuery(string query, params QueryParameters[] queryParams)
         {
             var queryBuilder = _dataQueryBuilder.WithCommandText(query);
@@ -93,7 +105,6 @@ namespace ExampleUsages.Repositories
         }
 
         //QUERY - Using DataQuery class
-
         public Contact RunQuery(IDataQuery dataQuery)
         {
             var reader = _dbSession.RunReaderFor(dataQuery);
@@ -108,4 +119,3 @@ namespace ExampleUsages.Repositories
             }
         }
     }
-}

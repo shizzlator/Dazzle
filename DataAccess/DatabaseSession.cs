@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using DataAccess.Interfaces;
 
 namespace DataAccess
@@ -22,7 +21,10 @@ namespace DataAccess
             {
                 using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
-                    return dbCommand.ExecuteScalar();
+                    var result = dbCommand.ExecuteScalar();
+                    if(!_transactionManager.TransactionInProgress)
+                        dbCommand.Connection.Close();
+                    return result;
                 }
             }
             catch(Exception)
@@ -40,7 +42,10 @@ namespace DataAccess
             {
                 using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
-                    return dbCommand.ExecuteNonQuery();
+                    var result = dbCommand.ExecuteNonQuery();
+                    if (!_transactionManager.TransactionInProgress)
+                        dbCommand.Connection.Close();
+                    return result;
                 }
             }
             catch (Exception)
@@ -59,7 +64,9 @@ namespace DataAccess
                 using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
                     dbCommand.ExecuteNonQuery();
-                    return (IDataParameter)dbCommand.Parameters[outputDataParameter];
+                    var result = (IDataParameter) dbCommand.Parameters[outputDataParameter];
+                    dbCommand.Connection.Close();
+                    return result;
                 }
             }
             catch (Exception)
@@ -75,7 +82,10 @@ namespace DataAccess
         {
             using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
             {
-                return dbCommand.ExecuteReader();
+                if (_transactionManager.TransactionInProgress)
+                    return dbCommand.ExecuteReader();
+                else
+                    return dbCommand.ExecuteReader(CommandBehavior.CloseConnection);
             }
         }
     }

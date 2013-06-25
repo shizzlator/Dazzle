@@ -33,7 +33,7 @@ namespace DataAccess
 
         private void InitialiseConnection()
         {
-            if (_connection == null)
+            if (_connection == null || string.IsNullOrEmpty(_connection.ConnectionString))
             {
                 _connection = new SqlConnection(_connectionString);
             }
