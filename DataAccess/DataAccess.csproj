@@ -37,7 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -46,13 +45,11 @@
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseSessionFactory.cs" />
     <Compile Include="DataAccessStructureMapWireUp.cs" />
     <Compile Include="DatabaseSession.cs" />
     <Compile Include="DataParam.cs" />
@@ -60,6 +57,7 @@
     <Compile Include="DatabaseCommandFactory.cs" />
     <Compile Include="DataQueryBuilder.cs" />
     <Compile Include="DatabaseConnectionManager.cs" />
+    <Compile Include="Interfaces\IDatabaseSessionFactory.cs" />
     <Compile Include="Interfaces\IConfig.cs" />
     <Compile Include="Interfaces\IDatabaseConnectionProvider.cs" />
     <Compile Include="Interfaces\IDatabaseSession.cs" />

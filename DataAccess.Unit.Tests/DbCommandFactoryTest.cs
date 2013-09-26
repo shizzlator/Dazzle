@@ -21,7 +21,7 @@ namespace DataAccess.Unit.Tests
         {
             _connectionManager = new Mock<IDatabaseConnectionManager>();
             _databaseCommandFactory = new DatabaseCommandFactory(_connectionManager.Object);
-            _dataQuery = new DataQuery() { CommandText = _expectedCommandText, CommandType = CommandType.Text };
+            _dataQuery = new DataQuery() { CommandText = _expectedCommandText };
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParmeterCollection = new Mock<IDataParameterCollection>();
@@ -58,9 +58,9 @@ namespace DataAccess.Unit.Tests
         public void ShouldInitialiseCommandDataParameters()
         {
             //Given
-            _dataQuery.AddParam("Title", "Mr");
-            _dataQuery.AddParam("FirstName", "David");
-            _dataQuery.AddParam("Surname", "Miranda");
+            _dataQuery.WithParam("Title", "Mr");
+            _dataQuery.WithParam("FirstName", "David");
+            _dataQuery.WithParam("Surname", "Miranda");
 
             //When
             _databaseCommandFactory.CreateCommandFor(_dataQuery);

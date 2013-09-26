@@ -12,7 +12,7 @@ namespace DataAccess
             container.Configure(x => x.For<IDatabaseConnectionManager>().Use<DatabaseConnectionManager>());
             container.Configure(x => x.For<IDatabaseConnectionProvider>().Use<SqlConnectionProvider>().Ctor<string>("connectionString").Is(connectionString));
             container.Configure(x => x.For<ITransactionManager>().Use<TransactionManager>());
-            container.Configure(x => x.For<IDataQueryBuilder>().Use<DataQueryBuilder>());
+            //container.Configure(x => x.For<IDataQueryBuilder>().Use<DataQueryBuilder>());
             container.Configure(x => x.For<IUnitOfWork>().Use<UnitOfWork>());
             container.Configure(x => x.For<IObjectContainer>().Use<ObjectContainer>());
         }

@@ -7,6 +7,7 @@ namespace DataAccess
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider;
         private readonly ITransactionManager _transactionManager;
+        private IDbConnection _dbConnection;
 
         public DatabaseConnectionManager(IDatabaseConnectionProvider databaseConnectionProvider, ITransactionManager transactionManager)
         {
@@ -14,34 +15,15 @@ namespace DataAccess
             _transactionManager = transactionManager;
         }
 
-        public IDbConnection Connection { get; private set; }
-
         public IDbCommand CreateCommandForCurrentConnection()
         {
-            InitialiseOrGetConnection();
+            _dbConnection = _databaseConnectionProvider.GetOpenConnection();
             return GetCommand();
-        }
-
-        private void InitialiseOrGetConnection()
-        {
-            if (Connection == null)
-            {
-                Connection = _databaseConnectionProvider.GetOpenConnection();
-                OpenConnectionIfClosed();
-            }
-        }
-
-        private void OpenConnectionIfClosed()
-        {
-            if (Connection.State == ConnectionState.Closed)
-            {
-                Connection.Open();
-            }
         }
 
         private IDbCommand GetCommand()
         {
-            var command = Connection.CreateCommand();
+            var command = _dbConnection.CreateCommand();
             if (_transactionManager.TransactionInProgress)
                 command.Transaction = _transactionManager.TransientTransaction;
             return command;

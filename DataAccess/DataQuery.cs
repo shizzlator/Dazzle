@@ -14,17 +14,25 @@ namespace DataAccess
             set { _parameters = value; }
         }
 
-        public CommandType CommandType { get; set; }
+        public CommandType CommandType { get; private set; }
 
-        public DataQuery AddParam(string name, object value)
+        public DataQuery WithParam(string name, object value)
         {
             _parameters.Add(name, new DataParam { Value = value });
             return this;
         }
 
-        public DataQuery WithText(string name)
+        public DataQuery WithQueryText(string queryText)
         {
-            CommandText = name;
+            CommandType = CommandType.Text;
+            CommandText = queryText;
+            return this;
+        }
+
+        public DataQuery WithStoredProc(string storedProcName)
+        {
+            CommandType = CommandType.StoredProcedure;
+            CommandText = storedProcName;
             return this;
         }
 

@@ -15,6 +15,11 @@ namespace DataAccess
             _transactionManager = transactionManager;
         }
 
+        public IDataQuery CreateQuery()
+        {
+            return new DataQuery();
+        }
+
         public object RunScalarCommandFor(IDataQuery dataQuery)
         {
             try

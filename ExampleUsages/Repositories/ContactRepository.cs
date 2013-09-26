@@ -11,12 +11,11 @@ namespace ExampleUsages.Repositories
     {
         private readonly IDatabaseSession _dbSession;
 
-        private readonly IDataQueryBuilder _dataQueryBuilder;
+        //private readonly IDataQueryBuilder _dataQueryBuilder;
 
-        public ContactRepository(IDatabaseSession dbSession, IDataQueryBuilder dataQueryBuilder)
+        public ContactRepository(IDatabaseSession dbSession)
         {
             _dbSession = dbSession;
-            _dataQueryBuilder = dataQueryBuilder;
         }
 
         //SIMPLE INSERT - using Stored Proc (note the DataQueryBuilder method BuildStoredQuery())
@@ -25,10 +24,11 @@ namespace ExampleUsages.Repositories
             //In this example it would be the Sproc responsibility to pass back ID, prob using SCOPE_IDENTITY()
             return (int)_dbSession.RunScalarCommandFor
             (
-                _dataQueryBuilder.WithCommandText("create_contact")
+                _dbSession.CreateQuery()
+                .WithQueryText("create_contact")
                 .WithParam("@FirstName", contact.FirstName)
                 .WithParam("@Surname", contact.Surname)
-                .WithParam("@Telephone", contact.Telephone).BuildStoredQuery()
+                .WithParam("@Telephone", contact.Telephone)
              );
         }
 
@@ -43,13 +43,12 @@ namespace ExampleUsages.Repositories
                                                Type = SqlDbType.Int
                                            };
 
-            var dataQuery = _dataQueryBuilder
-                .WithCommandText("create_contact")
+            var dataQuery = _dbSession.CreateQuery()
+                .WithQueryText("create_contact")
                 .WithParam("@ContactId", contactIdOutputParam)
                 .WithParam("@FirstName", contact.FirstName)
                 .WithParam("@Surname", contact.Surname)
-                .WithParam("@Telephone", contact.Telephone)
-                .BuildTextQuery();
+                .WithParam("@Telephone", contact.Telephone);
 
             //Need to cast it to an SqlParameter as the Mapping of data types to the generic DataParameter is whack.
             //TODO: An SqlInputOutputParameter class would end this fuckery.
@@ -58,13 +57,13 @@ namespace ExampleUsages.Repositories
         }
 
         //SIMPLE GET - Using DataQueryBuilder
-
         public Contact Get(int contactId)
         {
             var reader = _dbSession.RunReaderFor
            (
-               _dataQueryBuilder.WithCommandText("select * from contact where ID = @contactId")
-               .WithParam("@contactId", contactId).BuildTextQuery()
+               _dbSession.CreateQuery()
+               .WithQueryText("select * from contact where ID = @contactId")
+               .WithParam("@contactId", contactId)
             );
             using (reader)
             {
@@ -74,14 +73,14 @@ namespace ExampleUsages.Repositories
 
         //INLINE PARAMETERISED QUERY
 
-        public Contact RunQuery(string query, params QueryParameters[] queryParams)
+        public Contact RunQuery(string queryText, params QueryParameters[] queryParams)
         {
-            var queryBuilder = _dataQueryBuilder.WithCommandText(query);
+            var dataQuery = _dbSession.CreateQuery().WithQueryText(queryText);
             foreach (var queryParam in queryParams)
             {
-                queryBuilder = queryBuilder.WithParam(queryParam.Name, queryParam.Value);
+                dataQuery = dataQuery.WithParam(queryParam.Name, queryParam.Value);
             }
-            using (var reader = _dbSession.RunReaderFor(queryBuilder.BuildTextQuery()))
+            using (var reader = _dbSession.RunReaderFor(dataQuery))
             {
                 return reader.Read() ? new Contact()
                     {

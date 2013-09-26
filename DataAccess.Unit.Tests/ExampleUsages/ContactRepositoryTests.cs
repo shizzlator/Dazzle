@@ -13,7 +13,6 @@ namespace DataAccess.Unit.Tests.ExampleUsages
     {
         private Mock<IDatabaseSession> _databaseSession;
         private ContactRepository _contactRepository;
-        private FakeDataQueryBuilder _dataQueryBuilder;
         private Contact _contact;
         private Mock<IDataReader> _dataReader;
 
@@ -28,9 +27,8 @@ namespace DataAccess.Unit.Tests.ExampleUsages
             _dataReader.Setup(x => x["Telephone"]).Returns("666");
 
             _databaseSession = new Mock<IDatabaseSession>();
-            _dataQueryBuilder = new FakeDataQueryBuilder();
             
-            _contactRepository = new ContactRepository(_databaseSession.Object, _dataQueryBuilder);
+            _contactRepository = new ContactRepository(_databaseSession.Object);
         }
 
         [Test]

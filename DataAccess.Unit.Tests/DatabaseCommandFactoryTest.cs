@@ -24,7 +24,7 @@ namespace DataAccess.Unit.Tests
             _connectionManager = new Mock<IDatabaseConnectionManager>();
             _transactionManager = new Mock<ITransactionManager>();
             _databaseCommandFactory = new DatabaseCommandFactory(_connectionManager.Object);
-            _dataQuery = new DataQuery() {CommandText = _commandText, CommandType = _commandType};
+            _dataQuery = new DataQuery() {CommandText = _commandText };
             _command = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParameterCollection = new Mock<IDataParameterCollection>();
@@ -54,7 +54,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldAddAllParametersToCommand()
         {
             //Given
-            _dataQuery.AddParam("@FirstName", "David").AddParam("@Surname", "Miranda");
+            _dataQuery.WithParam("@FirstName", "David").WithParam("@Surname", "Miranda");
 
             //When
             _databaseCommandFactory.CreateCommandFor(_dataQuery);
