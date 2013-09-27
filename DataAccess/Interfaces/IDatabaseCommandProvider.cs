@@ -2,7 +2,7 @@
 
 namespace DataAccess.Interfaces
 {
-    public interface IDatabaseConnectionManager
+    public interface IDatabaseCommandProvider
     {
         IDbCommand CreateCommandForCurrentConnection();
     }

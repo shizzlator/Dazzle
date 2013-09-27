@@ -9,7 +9,7 @@ namespace DataAccess.Unit.Tests
     public class DatabaseSessionTest
     {
         private DataQuery _dataQuery;
-        private Mock<IDatabaseCommandFactory> _commandFactory;
+        private Mock<IDatabaseCommandCreator> _commandFactory;
         private Mock<IDbCommand> _command;
         private DatabaseSession _databaseSession;
         private Mock<ITransactionManager> _transactionManager;
@@ -19,7 +19,7 @@ namespace DataAccess.Unit.Tests
         public void BeforeEachTest()
         {
             _dataQuery = new DataQuery();
-            _commandFactory = new Mock<IDatabaseCommandFactory>();
+            _commandFactory = new Mock<IDatabaseCommandCreator>();
             _command = new Mock<IDbCommand>();
             _transactionManager = new Mock<ITransactionManager>();
             _databaseSession = new DatabaseSession(_commandFactory.Object, _transactionManager.Object);

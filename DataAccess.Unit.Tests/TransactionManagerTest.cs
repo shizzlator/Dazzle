@@ -26,12 +26,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager = new TransactionManager(_databaseConnectionProvider.Object);
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            _transactionManager.RollbackAndDisposeConnection();
-        }
-
         [Test]
         public void ShouldCreateTransientTransaction()
         {
@@ -75,7 +69,6 @@ namespace DataAccess.Unit.Tests
             _transientTransaction.Setup(x => x.Commit()).Throws(new Exception("commit failed"));
 
             //When
-            _transactionManager.CommitAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Commit(), Times.Once());
@@ -90,7 +83,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Begin();
 
             //When
-            _transactionManager.CommitAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Commit(), Times.Once());
@@ -106,8 +98,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Begin();
             _transientTransaction.Setup(x => x.Commit()).Throws(new Exception("commit failed"));
 
-            //When
-            _transactionManager.CommitAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Commit(), Times.Once());
@@ -146,7 +136,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Begin();
 
             //When
-            _transactionManager.RollbackAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Rollback(), Times.Once());
@@ -162,7 +151,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Commit();
 
             //When
-            _transactionManager.RollbackAndDisposeConnection();
 
             //Then
             _transientTransaction.Verify(x => x.Rollback(), Times.Never());
@@ -177,7 +165,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Rollback(); //kills off the underlying transaction
 
             //When
-            _transactionManager.RollbackAndDisposeConnection();
 
             //Then
             _connection.Verify(x => x.Dispose(), Times.Once());
@@ -192,7 +179,6 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Rollback(); //kills off the underlying transaction
 
             //When
-            _transactionManager.CommitAndDisposeConnection();
 
             //Then
             _connection.Verify(x => x.Dispose(), Times.Once());

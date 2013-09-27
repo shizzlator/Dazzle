@@ -4,42 +4,42 @@ namespace DataAccess
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IObjectContainer _container;
-        private readonly ITransactionManager _transactionManager;
+        private readonly IDatabaseSession _databaseSession;
+        private readonly IRepositoryContainer _repositoryContainer;
 
-        public UnitOfWork(IObjectContainer container, ITransactionManager transactionManager)
+        public UnitOfWork(IDatabaseSessionFactory databaseSessionFactory, IRepositoryContainer repositoryContainer)
         {
-            _container = container;
-            _transactionManager = transactionManager;
+            _databaseSession = databaseSessionFactory.CreateSession();
+            _repositoryContainer = repositoryContainer;
         }
 
         public void Commit()
         {
-            _transactionManager.Commit();
+            _databaseSession.CommitTransaction();
         }
 
         public T Repository<T>() where T : IRepository
         {
-            if (!_transactionManager.TransactionInProgress)
-            {
-                _transactionManager.Begin();
-            }
-            return _container.GetInstanceOf<T>();
+            _databaseSession.BeginTransaction();
+            return _repositoryContainer.GetInstanceOf<T>();
+        }
+
+        public T Repository<T>(string connectionString) where T : IRepository
+        {
+            _databaseSession.BeginTransaction();
+            return _repositoryContainer.GetInstanceOf<T>();
         }
 
         public void Rollback()
         {
-            _transactionManager.Rollback();
+            _databaseSession.RollbackTransaction();
         }
 
         public void RollbackAndCloseConnection()
         {
-            _transactionManager.RollbackAndDisposeConnection();
-        }
-
-        public void Dispose()
-        {
-            _transactionManager.Rollback();
+            _databaseSession.RollbackTransaction();
+            SqlConnectionProvider.Connection.Close();
         }
     }
 }
+

@@ -4,13 +4,20 @@ namespace DataAccess
 {
     public class DatabaseSessionFactory : IDatabaseSessionFactory
     {
-        public IDatabaseSession CreateSession(string connectionString)
+        private readonly string _connectionString;
+
+        public DatabaseSessionFactory(string connectionString)
         {
-            SqlConnectionProvider sqlConnectionProvider = new SqlConnectionProvider(connectionString);
-            TransactionManager transactionManager = new TransactionManager(sqlConnectionProvider);
-            DatabaseConnectionManager dbConnectionManager = new DatabaseConnectionManager(sqlConnectionProvider, transactionManager);
-            DatabaseCommandFactory dbCommandFactory = new DatabaseCommandFactory(dbConnectionManager);
-            return new DatabaseSession(dbCommandFactory, transactionManager);   
+            _connectionString = connectionString;
+        }
+
+        public IDatabaseSession CreateSession()
+        {
+            var sqlConnectionProvider = new SqlConnectionProvider(_connectionString);
+            var transactionManager = new TransactionManager(sqlConnectionProvider);
+            var databaseConnectionManager = new DatabaseCommandProvider(sqlConnectionProvider, transactionManager);
+            var databaseCommandCreator = new DatabaseCommandCreator(databaseConnectionManager);
+            return new DatabaseSession(databaseCommandCreator, transactionManager);   
         }
     }
 }

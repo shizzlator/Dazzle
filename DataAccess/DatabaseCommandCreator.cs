@@ -3,28 +3,25 @@ using DataAccess.Interfaces;
 
 namespace DataAccess
 {
-    public class DatabaseCommandFactory : IDatabaseCommandFactory
+    public class DatabaseCommandCreator : IDatabaseCommandCreator
     {
-        private readonly IDatabaseConnectionManager _connectionManager;
+        private readonly IDatabaseCommandProvider _databaseCommandProvider;
         private IDbCommand _dbCommand;
 
-        public DatabaseCommandFactory(IDatabaseConnectionManager connectionManager)
+        public DatabaseCommandCreator(IDatabaseCommandProvider databaseCommandProvider)
         {
-            _connectionManager = connectionManager;
+            _databaseCommandProvider = databaseCommandProvider;
         }
 
         public IDbCommand CreateCommandFor(IDataQuery dataQuery)
         {
-            InitialiseCommand(dataQuery);
-            AddParametersForStoredProc(dataQuery);
-            return _dbCommand;
-        }
-
-        private void InitialiseCommand(IDataQuery dataQuery)
-        {
-            _dbCommand = _connectionManager.CreateCommandForCurrentConnection();
+            _dbCommand = _databaseCommandProvider.CreateCommandForCurrentConnection();
             _dbCommand.CommandType = dataQuery.CommandType;
             _dbCommand.CommandText = dataQuery.CommandText;
+
+            AddParametersForStoredProc(dataQuery);
+
+            return _dbCommand;
         }
 
         private void AddParametersForStoredProc(IDataQuery dataQuery)

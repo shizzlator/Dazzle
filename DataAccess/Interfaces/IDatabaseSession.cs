@@ -10,5 +10,9 @@ namespace DataAccess.Interfaces
         int RunUpdateCommandFor(IDataQuery dataQuery);
         IDataReader RunReaderFor(IDataQuery dataQuery);
         IDataParameter RunUpdateCommandFor(IDataQuery dataQuery, string outputDataParameter);
+
+        void BeginTransaction();
+        void CommitTransaction();
+        void RollbackTransaction();
     }
 }

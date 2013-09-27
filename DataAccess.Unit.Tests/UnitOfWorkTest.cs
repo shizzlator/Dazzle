@@ -1,4 +1,5 @@
 ﻿using DataAccess.Interfaces;
+using DataAccess.Unit.Tests.Fakes;
 using Moq;
 using NUnit.Framework;
 
@@ -7,41 +8,43 @@ namespace DataAccess.Unit.Tests
     [TestFixture]
     public class UnitOfWorkTest
     {
-        private Mock<IObjectContainer> _iocContainer;
-        private TestRepository _expectedRepository;
+        private Mock<IRepositoryContainer> _repositoryContainer;
+        private FakeRepository _expectedRepository;
         private UnitOfWork _unitOfWork;
         private Mock<ITransactionManager> _transactionManager;
+        private Mock<IDatabaseSessionFactory> _databaseSessionFactory;
 
         [SetUp]
         public void SetUp()
         {
-            _iocContainer = new Mock<IObjectContainer>();
-            _expectedRepository = new TestRepository();
+            _repositoryContainer = new Mock<IRepositoryContainer>();
+            _databaseSessionFactory = new Mock<IDatabaseSessionFactory>();
+            _expectedRepository = new FakeRepository(_databaseSessionFactory.Object);
             _transactionManager = new Mock<ITransactionManager>();
-            _unitOfWork = new UnitOfWork(_iocContainer.Object, _transactionManager.Object);
+            _unitOfWork = new UnitOfWork(_databaseSessionFactory.Object, new Mock<IRepositoryContainer>().Object);
         }
 
         [Test]
         public void ShouldGetARepositoryFromTheIoCContainer()
         {
             //Given
-            _iocContainer.Setup(x => x.GetInstanceOf<TestRepository>()).Returns(_expectedRepository);
+            _repositoryContainer.Setup(x => x.GetInstanceOf<FakeRepository>()).Returns(_expectedRepository);
 
             //When
-            var testRepository = _unitOfWork.Repository<TestRepository>();
+            var testRepository = _unitOfWork.Repository<FakeRepository>();
 
             //Then
-            _iocContainer.Verify(x => x.GetInstanceOf<TestRepository>(), Times.Once());
+            _repositoryContainer.Verify(x => x.GetInstanceOf<FakeRepository>(), Times.Once());
             Assert.That(testRepository, Is.EqualTo(_expectedRepository));
         }
 
         [Test]
         public void ShouldCreateNewTransaction()
         {
-            _iocContainer.Setup(x => x.GetInstanceOf<TestRepository>()).Returns(_expectedRepository);
+            _repositoryContainer.Setup(x => x.GetInstanceOf<FakeRepository>()).Returns(_expectedRepository);
 
             //When
-            _unitOfWork.Repository<TestRepository>();
+            _unitOfWork.Repository<FakeRepository>();
 
             //Then
             _transactionManager.Verify(x => x.Begin(), Times.Once());
@@ -51,18 +54,14 @@ namespace DataAccess.Unit.Tests
         public void ShouldNotBeginATransactionIfOneIsInProgress()
         {
             //Given
-            _iocContainer.Setup(x => x.GetInstanceOf<TestRepository>()).Returns(_expectedRepository);
+            _repositoryContainer.Setup(x => x.GetInstanceOf<FakeRepository>()).Returns(_expectedRepository);
             _transactionManager.SetupGet(x => x.TransactionInProgress).Returns(true);
 
             //When
-            _unitOfWork.Repository<TestRepository>();
+            _unitOfWork.Repository<FakeRepository>();
 
             //Then
             _transactionManager.Verify(x => x.Begin(), Times.Never());
         }
-    }
-
-    public class TestRepository : IRepository
-    {
     }
 }

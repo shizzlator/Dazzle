@@ -49,36 +49,5 @@ namespace DataAccess
         }
 
         public bool TransactionInProgress { get { return _transientTransaction != null; } }
-
-        public void CommitAndDisposeConnection()
-        {
-            try
-            {
-                _transientTransaction.Commit();
-                _transientTransaction.Dispose();
-                _transientTransaction = null;
-                _databaseConnectionProvider.GetOpenConnection().Dispose();
-            }
-            catch (Exception)
-            {
-                RollbackAndDisposeConnection();
-                throw;
-            }
-        }
-
-        public void RollbackAndDisposeConnection()
-        {
-            if (TransactionInProgress)
-            {
-                _transientTransaction.Rollback();
-                _transientTransaction.Dispose();
-                _transientTransaction = null;
-                _databaseConnectionProvider.GetOpenConnection().Dispose();
-            }
-            else
-            {
-                _databaseConnectionProvider.GetOpenConnection().Dispose();
-            }
-        }
     }
 }

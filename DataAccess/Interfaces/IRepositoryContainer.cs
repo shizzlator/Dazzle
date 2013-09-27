@@ -1,6 +1,6 @@
 namespace DataAccess.Interfaces
 {
-    public interface IObjectContainer
+    public interface IRepositoryContainer
     {
         T GetInstanceOf<T>();
     }

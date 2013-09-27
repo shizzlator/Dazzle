@@ -55,14 +55,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseCommandFactoryTest.cs" />
+    <Compile Include="DatabaseCommandCreatorTest.cs" />
     <Compile Include="DatabaseSessionTest.cs" />
-    <Compile Include="DatabaseConnetionManagerTest.cs" />
+    <Compile Include="DatabaseCommandProviderTest.cs" />
     <Compile Include="DataQueryBuilderTest.cs" />
     <Compile Include="DataReaderTest.cs" />
     <Compile Include="DbCommandFactoryTest.cs" />
     <Compile Include="ExampleUsages\ContactRepositoryTests.cs" />
+    <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryContainerTest.cs" />
     <Compile Include="TransactionManagerTest.cs" />
     <Compile Include="UnitOfWorkTest.cs" />
   </ItemGroup>

@@ -8,8 +8,8 @@ namespace DataAccess.Unit.Tests
     [TestFixture]
     public class DbCommandFactoryTest
     {
-        private Mock<IDatabaseConnectionManager> _connectionManager;
-        private DatabaseCommandFactory _databaseCommandFactory;
+        private Mock<IDatabaseCommandProvider> _connectionManager;
+        private DatabaseCommandCreator _databaseCommandCreator;
         private DataQuery _dataQuery;
         private Mock<IDbCommand> _dbCommand;
         private Mock<IDbDataParameter> _dataParameter;
@@ -19,8 +19,8 @@ namespace DataAccess.Unit.Tests
         [SetUp]
         public void SetUp()
         {
-            _connectionManager = new Mock<IDatabaseConnectionManager>();
-            _databaseCommandFactory = new DatabaseCommandFactory(_connectionManager.Object);
+            _connectionManager = new Mock<IDatabaseCommandProvider>();
+            _databaseCommandCreator = new DatabaseCommandCreator(_connectionManager.Object);
             _dataQuery = new DataQuery() { CommandText = _expectedCommandText };
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
@@ -35,7 +35,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldObtainAFreshCommandForTheCurrentConnection()
         {
             //When
-            var command = _databaseCommandFactory.CreateCommandFor(_dataQuery);
+            var command = _databaseCommandCreator.CreateCommandFor(_dataQuery);
     
             //Then
             _connectionManager.Verify(x => x.CreateCommandForCurrentConnection(), Times.Once());
@@ -46,7 +46,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldInitaliseCommandProperties()
         {
             //When
-            _databaseCommandFactory.CreateCommandFor(_dataQuery);
+            _databaseCommandCreator.CreateCommandFor(_dataQuery);
 
 
             //Then
@@ -63,7 +63,7 @@ namespace DataAccess.Unit.Tests
             _dataQuery.WithParam("Surname", "Miranda");
 
             //When
-            _databaseCommandFactory.CreateCommandFor(_dataQuery);
+            _databaseCommandCreator.CreateCommandFor(_dataQuery);
 
             //Then
             _dataParameter.VerifySet(x => x.ParameterName = "Title", Times.Once());

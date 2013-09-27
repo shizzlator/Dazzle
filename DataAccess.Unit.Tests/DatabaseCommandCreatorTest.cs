@@ -6,12 +6,12 @@ using NUnit.Framework;
 namespace DataAccess.Unit.Tests
 {
     [TestFixture]
-    public class DatabaseCommandFactoryTest
+    public class DatabaseCommandCreatorTest
     {
         private static string _commandText = "command text";
         private static CommandType _commandType = CommandType.Text;
-        private Mock<IDatabaseConnectionManager> _connectionManager;
-        private DatabaseCommandFactory _databaseCommandFactory;
+        private Mock<IDatabaseCommandProvider> _connectionManager;
+        private DatabaseCommandCreator _databaseCommandCreator;
         private DataQuery _dataQuery;
         private Mock<IDbCommand> _command;
         private Mock<IDbDataParameter> _dataParameter;
@@ -21,9 +21,9 @@ namespace DataAccess.Unit.Tests
         [SetUp]
         public void SetUp()
         {
-            _connectionManager = new Mock<IDatabaseConnectionManager>();
+            _connectionManager = new Mock<IDatabaseCommandProvider>();
             _transactionManager = new Mock<ITransactionManager>();
-            _databaseCommandFactory = new DatabaseCommandFactory(_connectionManager.Object);
+            _databaseCommandCreator = new DatabaseCommandCreator(_connectionManager.Object);
             _dataQuery = new DataQuery() {CommandText = _commandText };
             _command = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
@@ -37,16 +37,10 @@ namespace DataAccess.Unit.Tests
         [Test]
         public void ShouldInitialiseCommand()
         {
-            //Given
-            _command.SetupProperty(x => x.CommandText);
-            _command.SetupProperty(x => x.CommandType);
-
             //When
-            var command = _databaseCommandFactory.CreateCommandFor(_dataQuery);
+            _databaseCommandCreator.CreateCommandFor(_dataQuery);
 
             //Then
-            Assert.That(command.CommandText, Is.EqualTo(_commandText));
-            Assert.That(command.CommandType, Is.EqualTo(_commandType));
             _connectionManager.Verify(x => x.CreateCommandForCurrentConnection(), Times.Once());
         }
 
@@ -57,7 +51,7 @@ namespace DataAccess.Unit.Tests
             _dataQuery.WithParam("@FirstName", "David").WithParam("@Surname", "Miranda");
 
             //When
-            _databaseCommandFactory.CreateCommandFor(_dataQuery);
+            _databaseCommandCreator.CreateCommandFor(_dataQuery);
     
             //Then
             _command.Verify(x => x.CreateParameter(), Times.Exactly(2));
@@ -76,7 +70,7 @@ namespace DataAccess.Unit.Tests
             _transactionManager.SetupGet(x => x.TransactionInProgress).Returns(true);
 
             //When
-            var command = _databaseCommandFactory.CreateCommandFor(_dataQuery);
+            var command = _databaseCommandCreator.CreateCommandFor(_dataQuery);
     
             //Then
             

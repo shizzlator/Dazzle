@@ -38,5 +38,10 @@ namespace DataAccess
                 _connection = new SqlConnection(_connectionString);
             }
         }
+
+        public static IDbConnection Connection
+        {
+            get { return _connection; }
+        }
     }
 }
