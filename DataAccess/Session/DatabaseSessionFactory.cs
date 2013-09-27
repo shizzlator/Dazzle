@@ -1,6 +1,7 @@
-﻿using DataAccess.Interfaces;
+﻿using DataAccess.Command;
+using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.Session
 {
     public class DatabaseSessionFactory : IDatabaseSessionFactory
     {
@@ -16,7 +17,7 @@ namespace DataAccess
             var sqlConnectionProvider = new SqlConnectionProvider(_connectionString);
             var transactionManager = new TransactionManager(sqlConnectionProvider);
             var databaseConnectionManager = new DatabaseCommandProvider(sqlConnectionProvider, transactionManager);
-            var databaseCommandCreator = new DatabaseCommandCreator(databaseConnectionManager);
+            var databaseCommandCreator = new DatabaseCommandBuilder(databaseConnectionManager);
             return new DatabaseSession(databaseCommandCreator, transactionManager);   
         }
     }

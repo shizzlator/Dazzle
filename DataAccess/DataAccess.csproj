@@ -49,14 +49,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseSessionFactory.cs" />
+    <Compile Include="Session\DatabaseSessionFactory.cs" />
     <Compile Include="DataAccessStructureMapWireUp.cs" />
-    <Compile Include="DatabaseSession.cs" />
-    <Compile Include="DataParam.cs" />
-    <Compile Include="DataQuery.cs" />
-    <Compile Include="DatabaseCommandCreator.cs" />
-    <Compile Include="DataQueryBuilder.cs" />
-    <Compile Include="DatabaseCommandProvider.cs" />
+    <Compile Include="Session\DatabaseSession.cs" />
+    <Compile Include="DataQuery\DataParam.cs" />
+    <Compile Include="DataQuery\DataQuery.cs" />
+    <Compile Include="Command\DatabaseCommandBuilder.cs" />
+    <Compile Include="Command\DatabaseCommandProvider.cs" />
     <Compile Include="Interfaces\IDatabaseSessionFactory.cs" />
     <Compile Include="Interfaces\IConfig.cs" />
     <Compile Include="Interfaces\IDatabaseConnectionProvider.cs" />
@@ -64,7 +63,7 @@
     <Compile Include="Interfaces\IDataParam.cs" />
     <Compile Include="Interfaces\IDataQuery.cs" />
     <Compile Include="Interfaces\IDataQueryBuilder.cs" />
-    <Compile Include="Interfaces\IDatabaseCommandCreator.cs" />
+    <Compile Include="Interfaces\IDatabaseCommandBuilder.cs" />
     <Compile Include="Interfaces\IDatabaseCommandProvider.cs" />
     <Compile Include="Interfaces\IDbSessionProvider.cs" />
     <Compile Include="Interfaces\IRepositoryContainer.cs" />
@@ -72,7 +71,7 @@
     <Compile Include="Interfaces\ITransactionManager.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryParameters.cs" />
+    <Compile Include="DataQuery\QueryParameters.cs" />
     <Compile Include="RepositoryContainer.cs" />
     <Compile Include="SqlConnectionProvider.cs" />
     <Compile Include="TestHelpers\TransactionalTestFixture.cs" />
@@ -86,6 +85,7 @@
   <ItemGroup>
     <Content Include="readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

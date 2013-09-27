@@ -2,7 +2,7 @@
 using System.Data;
 using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.DataQuery
 {
     public class DataQuery : IDataQuery
     {

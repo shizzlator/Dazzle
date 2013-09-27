@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.Command
 {
     public class DatabaseCommandProvider : IDatabaseCommandProvider
     {

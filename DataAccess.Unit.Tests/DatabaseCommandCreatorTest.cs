@@ -1,4 +1,5 @@
 using System.Data;
+using DataAccess.Command;
 using DataAccess.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -11,8 +12,8 @@ namespace DataAccess.Unit.Tests
         private static string _commandText = "command text";
         private static CommandType _commandType = CommandType.Text;
         private Mock<IDatabaseCommandProvider> _connectionManager;
-        private DatabaseCommandCreator _databaseCommandCreator;
-        private DataQuery _dataQuery;
+        private DatabaseCommandBuilder _databaseCommandBuilder;
+        private DataQuery.DataQuery _dataQuery;
         private Mock<IDbCommand> _command;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParameterCollection;
@@ -23,8 +24,8 @@ namespace DataAccess.Unit.Tests
         {
             _connectionManager = new Mock<IDatabaseCommandProvider>();
             _transactionManager = new Mock<ITransactionManager>();
-            _databaseCommandCreator = new DatabaseCommandCreator(_connectionManager.Object);
-            _dataQuery = new DataQuery() {CommandText = _commandText };
+            _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
+            _dataQuery = new DataQuery.DataQuery() {CommandText = _commandText };
             _command = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParameterCollection = new Mock<IDataParameterCollection>();
@@ -38,7 +39,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldInitialiseCommand()
         {
             //When
-            _databaseCommandCreator.CreateCommandFor(_dataQuery);
+            _databaseCommandBuilder.CreateCommandFor(_dataQuery);
 
             //Then
             _connectionManager.Verify(x => x.CreateCommandForCurrentConnection(), Times.Once());
@@ -51,7 +52,7 @@ namespace DataAccess.Unit.Tests
             _dataQuery.WithParam("@FirstName", "David").WithParam("@Surname", "Miranda");
 
             //When
-            _databaseCommandCreator.CreateCommandFor(_dataQuery);
+            _databaseCommandBuilder.CreateCommandFor(_dataQuery);
     
             //Then
             _command.Verify(x => x.CreateParameter(), Times.Exactly(2));
@@ -70,7 +71,7 @@ namespace DataAccess.Unit.Tests
             _transactionManager.SetupGet(x => x.TransactionInProgress).Returns(true);
 
             //When
-            var command = _databaseCommandCreator.CreateCommandFor(_dataQuery);
+            var command = _databaseCommandBuilder.CreateCommandFor(_dataQuery);
     
             //Then
             

@@ -1,14 +1,14 @@
 using System.Data;
 using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.Command
 {
-    public class DatabaseCommandCreator : IDatabaseCommandCreator
+    public class DatabaseCommandBuilder : IDatabaseCommandBuilder
     {
         private readonly IDatabaseCommandProvider _databaseCommandProvider;
         private IDbCommand _dbCommand;
 
-        public DatabaseCommandCreator(IDatabaseCommandProvider databaseCommandProvider)
+        public DatabaseCommandBuilder(IDatabaseCommandProvider databaseCommandProvider)
         {
             _databaseCommandProvider = databaseCommandProvider;
         }

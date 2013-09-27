@@ -1,6 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using DataAccess;
+using DataAccess.DataQuery;
 using DataAccess.Interfaces;
 using ExampleUsages.DTOs;
 using ExampleUsages.Repositories.Interfaces;

@@ -2,22 +2,22 @@
 using System.Data;
 using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.Session
 {
     public class DatabaseSession : IDatabaseSession
     {
-        private readonly IDatabaseCommandCreator _databaseCommandCreator;
+        private readonly IDatabaseCommandBuilder _databaseCommandBuilder;
         private readonly ITransactionManager _transactionManager;
 
-        public DatabaseSession(IDatabaseCommandCreator databaseCommandCreator, ITransactionManager transactionManager)
+        public DatabaseSession(IDatabaseCommandBuilder databaseCommandBuilder, ITransactionManager transactionManager)
         {
-            _databaseCommandCreator = databaseCommandCreator;
+            _databaseCommandBuilder = databaseCommandBuilder;
             _transactionManager = transactionManager;
         }
 
         public IDataQuery CreateQuery()
         {
-            return new DataQuery();
+            return new DataQuery.DataQuery();
         }
 
         public object RunScalarCommandFor(IDataQuery dataQuery)
@@ -25,7 +25,7 @@ namespace DataAccess
             IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandCreator.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
                 {
                     connection = dbCommand.Connection;
                     var result = dbCommand.ExecuteScalar();
@@ -49,7 +49,7 @@ namespace DataAccess
             IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandCreator.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
                 {
                     connection = dbCommand.Connection;
                     var result = dbCommand.ExecuteNonQuery();
@@ -73,7 +73,7 @@ namespace DataAccess
             IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandCreator.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
                 {
                     connection = dbCommand.Connection;
                     dbCommand.ExecuteNonQuery();
@@ -98,7 +98,7 @@ namespace DataAccess
             IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandCreator.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
                 {
                     connection = dbCommand.Connection;
 

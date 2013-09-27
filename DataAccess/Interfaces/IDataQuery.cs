@@ -8,9 +8,9 @@ namespace DataAccess.Interfaces
         string CommandText { get; set; }
         IDictionary<string, IDataParam> Parameters { get; set; }
         CommandType CommandType { get; }
-        DataQuery WithParam(string name, object value);
-        DataQuery WithQueryText(string queryText);
-        DataQuery WithStoredProc(string storedProcName);
-        DataQuery WithCommandType(CommandType commandType);
+        DataQuery.DataQuery WithParam(string name, object value);
+        DataQuery.DataQuery WithQueryText(string queryText);
+        DataQuery.DataQuery WithStoredProc(string storedProcName);
+        DataQuery.DataQuery WithCommandType(CommandType commandType);
     }
 }

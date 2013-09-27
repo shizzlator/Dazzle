@@ -1,4 +1,4 @@
-namespace DataAccess
+namespace DataAccess.DataQuery
 {
     public class QueryParameters
     {

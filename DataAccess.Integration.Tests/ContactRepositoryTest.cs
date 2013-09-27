@@ -1,4 +1,5 @@
 using System.Configuration;
+using DataAccess.DataQuery;
 using DataAccess.TestHelpers;
 using ExampleUsages.DTOs;
 using ExampleUsages.Repositories;
@@ -41,7 +42,7 @@ namespace DataAccess.Integration.Tests
         public void ShouldGetContactUsingRunQueryMethodWithDataQuery()
         {
             //Given
-            var dataQuery = new DataQuery() {CommandText = "select * from Contact where FirstName = @FirstName",}.WithParam("@FirstName", "David");
+            var dataQuery = new DataQuery.DataQuery() {CommandText = "select * from Contact where FirstName = @FirstName",}.WithParam("@FirstName", "David");
 
             //When - This could be a generic repository
             var contact = UnitOfWork.Repository<ContactRepository>().RunQuery(dataQuery);

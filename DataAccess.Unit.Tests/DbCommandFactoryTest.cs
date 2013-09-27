@@ -1,4 +1,5 @@
 using System.Data;
+using DataAccess.Command;
 using DataAccess.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -9,8 +10,8 @@ namespace DataAccess.Unit.Tests
     public class DbCommandFactoryTest
     {
         private Mock<IDatabaseCommandProvider> _connectionManager;
-        private DatabaseCommandCreator _databaseCommandCreator;
-        private DataQuery _dataQuery;
+        private DatabaseCommandBuilder _databaseCommandBuilder;
+        private DataQuery.DataQuery _dataQuery;
         private Mock<IDbCommand> _dbCommand;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParmeterCollection;
@@ -20,8 +21,8 @@ namespace DataAccess.Unit.Tests
         public void SetUp()
         {
             _connectionManager = new Mock<IDatabaseCommandProvider>();
-            _databaseCommandCreator = new DatabaseCommandCreator(_connectionManager.Object);
-            _dataQuery = new DataQuery() { CommandText = _expectedCommandText };
+            _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
+            _dataQuery = new DataQuery.DataQuery() { CommandText = _expectedCommandText };
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParmeterCollection = new Mock<IDataParameterCollection>();
@@ -35,7 +36,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldObtainAFreshCommandForTheCurrentConnection()
         {
             //When
-            var command = _databaseCommandCreator.CreateCommandFor(_dataQuery);
+            var command = _databaseCommandBuilder.CreateCommandFor(_dataQuery);
     
             //Then
             _connectionManager.Verify(x => x.CreateCommandForCurrentConnection(), Times.Once());
@@ -46,7 +47,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldInitaliseCommandProperties()
         {
             //When
-            _databaseCommandCreator.CreateCommandFor(_dataQuery);
+            _databaseCommandBuilder.CreateCommandFor(_dataQuery);
 
 
             //Then
@@ -63,7 +64,7 @@ namespace DataAccess.Unit.Tests
             _dataQuery.WithParam("Surname", "Miranda");
 
             //When
-            _databaseCommandCreator.CreateCommandFor(_dataQuery);
+            _databaseCommandBuilder.CreateCommandFor(_dataQuery);
 
             //Then
             _dataParameter.VerifySet(x => x.ParameterName = "Title", Times.Once());
