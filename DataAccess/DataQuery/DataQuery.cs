@@ -16,27 +16,27 @@ namespace DataAccess.DataQuery
 
         public CommandType CommandType { get; private set; }
 
-        public DataQuery WithParam(string name, object value)
+        public IDataQuery WithParam(string name, object value)
         {
             _parameters.Add(name, new DataParam { Value = value });
             return this;
         }
 
-        public DataQuery WithQueryText(string queryText)
+        public IDataQuery WithQueryText(string queryText)
         {
             CommandType = CommandType.Text;
             CommandText = queryText;
             return this;
         }
 
-        public DataQuery WithStoredProc(string storedProcName)
+        public IDataQuery WithStoredProc(string storedProcName)
         {
             CommandType = CommandType.StoredProcedure;
             CommandText = storedProcName;
             return this;
         }
 
-        public DataQuery WithCommandType(CommandType commandType)
+        public IDataQuery WithCommandType(CommandType commandType)
         {
             CommandType = commandType;
             return this;
