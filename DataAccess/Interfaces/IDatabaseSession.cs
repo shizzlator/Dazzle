@@ -6,10 +6,10 @@ namespace DataAccess.Interfaces
     public interface IDatabaseSession
     {
         IDataQuery CreateQuery();
-        object RunScalarCommandFor(IDataQuery dataQuery);
-        int RunUpdateCommandFor(IDataQuery dataQuery);
-        IDataReader RunReaderFor(IDataQuery dataQuery);
-        IDataParameter RunUpdateCommandFor(IDataQuery dataQuery, string outputDataParameter);
+        object ExecuteScalar(IDataQuery dataQuery);
+        int ExecuteUpdate(IDataQuery dataQuery);
+        IDataReader ExecuteReader(IDataQuery dataQuery);
+        IDataParameter ExecuteUpdate(IDataQuery dataQuery, string outputDataParameter);
 
         void BeginTransaction();
         void CommitTransaction();

@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using DataAccess.Interfaces;
+using DataAccess.Query;
 using DataAccess.Session;
 using Moq;
 using NUnit.Framework;
@@ -9,7 +10,7 @@ namespace DataAccess.Unit.Tests
     [TestFixture]
     public class DatabaseSessionTest
     {
-        private DataQuery.DataQuery _dataQuery;
+        private DataQuery _dataQuery;
         private Mock<IDatabaseCommandBuilder> _commandFactory;
         private Mock<IDbCommand> _command;
         private DatabaseSession _databaseSession;
@@ -19,21 +20,21 @@ namespace DataAccess.Unit.Tests
         [SetUp]
         public void BeforeEachTest()
         {
-            _dataQuery = new DataQuery.DataQuery();
+            _dataQuery = new DataQuery();
             _commandFactory = new Mock<IDatabaseCommandBuilder>();
             _command = new Mock<IDbCommand>();
             _transactionManager = new Mock<ITransactionManager>();
             _databaseSession = new DatabaseSession(_commandFactory.Object, _transactionManager.Object);
             _connection = new Mock<IDbConnection>();
             _command.Setup(x => x.Connection).Returns(_connection.Object);
-            _commandFactory.Setup(x => x.CreateCommandFor(It.IsAny<DataQuery.DataQuery>())).Returns(_command.Object);
+            _commandFactory.Setup(x => x.CreateCommandFor(It.IsAny<DataQuery>())).Returns(_command.Object);
         }
 
         [Test]
         public void ShouldCreateRunAndDisposeOfScalarCommandAndConnectionForDataQueryWithNoTransaction()
         {
             //When
-            _databaseSession.RunScalarCommandFor(_dataQuery);
+            _databaseSession.ExecuteScalar(_dataQuery);
 
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
@@ -46,7 +47,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldCreateRunAndDisposeOfUpdateCommandAndConnectionForDataQueryWithNoTransaction()
         {
             //When
-            _databaseSession.RunUpdateCommandFor(_dataQuery);
+            _databaseSession.ExecuteUpdate(_dataQuery);
 
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
@@ -63,7 +64,7 @@ namespace DataAccess.Unit.Tests
             _command.Setup(x => x.ExecuteReader(CommandBehavior.CloseConnection)).Returns(dataReader.Object);
             
             //When
-            var reader = _databaseSession.RunReaderFor(_dataQuery);
+            var reader = _databaseSession.ExecuteReader(_dataQuery);
 
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
@@ -79,7 +80,7 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Setup(x => x.TransactionInProgress).Returns(true);
 
             //When
-            _databaseSession.RunScalarCommandFor(_dataQuery);
+            _databaseSession.ExecuteScalar(_dataQuery);
 
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
@@ -95,7 +96,7 @@ namespace DataAccess.Unit.Tests
             _transactionManager.Setup(x => x.TransactionInProgress).Returns(true);
 
             //When
-            _databaseSession.RunUpdateCommandFor(_dataQuery);
+            _databaseSession.ExecuteUpdate(_dataQuery);
 
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
@@ -113,7 +114,7 @@ namespace DataAccess.Unit.Tests
             _command.Setup(x => x.ExecuteReader()).Returns(dataReader.Object);
 
             //When
-            var reader = _databaseSession.RunReaderFor(_dataQuery);
+            var reader = _databaseSession.ExecuteReader(_dataQuery);
 
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());

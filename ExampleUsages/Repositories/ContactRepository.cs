@@ -1,8 +1,8 @@
 using System.Data;
 using System.Data.SqlClient;
 using DataAccess;
-using DataAccess.DataQuery;
 using DataAccess.Interfaces;
+using DataAccess.Query;
 using ExampleUsages.DTOs;
 using ExampleUsages.Repositories.Interfaces;
 
@@ -23,7 +23,7 @@ namespace ExampleUsages.Repositories
         public int Create(Contact contact)
         {
             //In this example it would be the Sproc responsibility to pass back ID, prob using SCOPE_IDENTITY()
-            return (int)_dbSession.RunScalarCommandFor
+            return (int)_dbSession.ExecuteScalar
             (
                 _dbSession.CreateQuery()
                 .WithQueryText("create_contact")
@@ -53,14 +53,14 @@ namespace ExampleUsages.Repositories
 
             //Need to cast it to an SqlParameter as the Mapping of data types to the generic DataParameter is whack.
             //TODO: An SqlInputOutputParameter class would end this fuckery.
-            contact.Id = (int)((SqlParameter)_dbSession.RunUpdateCommandFor(dataQuery, "@ContactId")).Value;
+            contact.Id = (int)((SqlParameter)_dbSession.ExecuteUpdate(dataQuery, "@ContactId")).Value;
             return contact;
         }
 
         //SIMPLE GET - Using DataQueryBuilder
         public Contact Get(int contactId)
         {
-            var reader = _dbSession.RunReaderFor
+            var reader = _dbSession.ExecuteReader
            (
                _dbSession.CreateQuery()
                .WithQueryText("select * from contact where ID = @contactId")
@@ -68,7 +68,12 @@ namespace ExampleUsages.Repositories
             );
             using (reader)
             {
-                return reader.Read() ? new Contact() { FirstName = (string)reader["FirstName"], Surname = (string)reader["Surname"], Telephone = (string)reader["Telephone"]} : null;
+                return reader.Read() ? new Contact()
+                    {
+                        FirstName = reader.Get<string>("FirstName"),
+                        Surname = reader.Get<string>("Surname"),
+                        Telephone = reader.Get<string>("Telephone")
+                    } : null;
             }
         }
 
@@ -81,13 +86,13 @@ namespace ExampleUsages.Repositories
             {
                 dataQuery = dataQuery.WithParam(queryParam.Name, queryParam.Value);
             }
-            using (var reader = _dbSession.RunReaderFor(dataQuery))
+            using (var reader = _dbSession.ExecuteReader(dataQuery))
             {
                 return reader.Read() ? new Contact()
                     {
-                        FirstName = (string)reader["FirstName"], 
-                        Surname = (string)reader["Surname"], 
-                        Telephone = (string)reader["Telephone"]
+                        FirstName = reader.Get<string>("FirstName"), 
+                        Surname = reader.Get<string>("Surname"),
+                        Telephone = reader.Get<string>("Telephone")
                     } : null;
             }
         }
@@ -96,14 +101,14 @@ namespace ExampleUsages.Repositories
 
         public Contact RunQuery(IDataQuery dataQuery)
         {
-            var reader = _dbSession.RunReaderFor(dataQuery);
+            var reader = _dbSession.ExecuteReader(dataQuery);
             using (reader)
             {
                 return reader.Read() ? new Contact()
                 {
-                    FirstName = (string)reader["FirstName"],
-                    Surname = (string)reader["Surname"],
-                    Telephone = (string)reader["Telephone"]
+                    FirstName = reader.Get<string>("FirstName"),
+                    Surname = reader.Get<string>("Surname"),
+                    Telephone = reader.Get<string>("Telephone")
                 } : null;
             }
         }

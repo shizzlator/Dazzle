@@ -1,6 +1,7 @@
 using System.Data;
 using DataAccess.Command;
 using DataAccess.Interfaces;
+using DataAccess.Query;
 using Moq;
 using NUnit.Framework;
 
@@ -11,7 +12,7 @@ namespace DataAccess.Unit.Tests
     {
         private Mock<IDatabaseCommandProvider> _connectionManager;
         private DatabaseCommandBuilder _databaseCommandBuilder;
-        private DataQuery.DataQuery _dataQuery;
+        private DataQuery _dataQuery;
         private Mock<IDbCommand> _dbCommand;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParmeterCollection;
@@ -22,7 +23,7 @@ namespace DataAccess.Unit.Tests
         {
             _connectionManager = new Mock<IDatabaseCommandProvider>();
             _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
-            _dataQuery = new DataQuery.DataQuery() { CommandText = _expectedCommandText };
+            _dataQuery = new DataQuery() { CommandText = _expectedCommandText };
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParmeterCollection = new Mock<IDataParameterCollection>();

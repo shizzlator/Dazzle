@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using DataAccess.Interfaces;
+using DataAccess.Query;
 
 namespace DataAccess.Session
 {
@@ -17,10 +18,10 @@ namespace DataAccess.Session
 
         public IDataQuery CreateQuery()
         {
-            return new DataQuery.DataQuery();
+            return new DataQuery();
         }
 
-        public object RunScalarCommandFor(IDataQuery dataQuery)
+        public object ExecuteScalar(IDataQuery dataQuery)
         {
             IDbConnection connection = null;
             try
@@ -44,7 +45,7 @@ namespace DataAccess.Session
             }
         }
 
-        public int RunUpdateCommandFor(IDataQuery dataQuery)
+        public int ExecuteUpdate(IDataQuery dataQuery)
         {
             IDbConnection connection = null;
             try
@@ -68,7 +69,7 @@ namespace DataAccess.Session
             }
         }
 
-        public IDataParameter RunUpdateCommandFor(IDataQuery dataQuery, string outputDataParameter)
+        public IDataParameter ExecuteUpdate(IDataQuery dataQuery, string outputDataParameter)
         {
             IDbConnection connection = null;
             try
@@ -93,7 +94,7 @@ namespace DataAccess.Session
             }
         }
 
-        public IDataReader RunReaderFor(IDataQuery dataQuery)
+        public IDataReader ExecuteReader(IDataQuery dataQuery)
         {
             IDbConnection connection = null;
             try

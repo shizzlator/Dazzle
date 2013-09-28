@@ -1,7 +1,7 @@
 using System.Data;
 using DataAccess.Interfaces;
 
-namespace DataAccess.DataQuery
+namespace DataAccess.Query
 {
     public class DataParam : IDataParam
     {

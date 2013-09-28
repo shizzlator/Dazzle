@@ -1,6 +1,7 @@
 using System.Data;
 using DataAccess.Command;
 using DataAccess.Interfaces;
+using DataAccess.Query;
 using Moq;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace DataAccess.Unit.Tests
         private static CommandType _commandType = CommandType.Text;
         private Mock<IDatabaseCommandProvider> _connectionManager;
         private DatabaseCommandBuilder _databaseCommandBuilder;
-        private DataQuery.DataQuery _dataQuery;
+        private DataQuery _dataQuery;
         private Mock<IDbCommand> _command;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParameterCollection;
@@ -25,7 +26,7 @@ namespace DataAccess.Unit.Tests
             _connectionManager = new Mock<IDatabaseCommandProvider>();
             _transactionManager = new Mock<ITransactionManager>();
             _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
-            _dataQuery = new DataQuery.DataQuery() {CommandText = _commandText };
+            _dataQuery = new DataQuery() {CommandText = _commandText };
             _command = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParameterCollection = new Mock<IDataParameterCollection>();

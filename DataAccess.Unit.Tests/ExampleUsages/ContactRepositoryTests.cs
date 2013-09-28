@@ -34,7 +34,7 @@ namespace DataAccess.Unit.Tests.ExampleUsages
         [Test]
         public void ShouldCreateNewContact()
         {
-            _databaseSession.Setup(x => x.RunScalarCommandFor(It.IsAny<IDataQuery>())).Returns(1024);
+            _databaseSession.Setup(x => x.ExecuteScalar(It.IsAny<IDataQuery>())).Returns(1024);
 
             _contact.Id = _contactRepository.Create(_contact);
 
@@ -44,7 +44,7 @@ namespace DataAccess.Unit.Tests.ExampleUsages
         [Test]
         public void ShouldGetContact()
         {
-            _databaseSession.Setup(x => x.RunReaderFor(It.IsAny<IDataQuery>())).Returns(_dataReader.Object);
+            _databaseSession.Setup(x => x.ExecuteReader(It.IsAny<IDataQuery>())).Returns(_dataReader.Object);
 
             var contact = _contactRepository.Get(5);
 
