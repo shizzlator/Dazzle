@@ -7,10 +7,18 @@ using NUnit.Framework;
 
 namespace DataAccess.Integration.Tests
 {
+    //TO RUN this locally, execute the run the Sql Script in ExampleUsages/DBScript!!!
+    [TestFixture, Ignore]
     public class ContactRepositoryTest : TransactionalTestFixture
     {
         private int _contactId;
+
         private Contact _contact;
+
+        protected override string ConnectionString
+        {
+            get { return ConfigurationManager.AppSettings["ConnectionString"]; }
+        }
 
         [SetUp]
         public void BeforeEachTest()
@@ -69,11 +77,6 @@ namespace DataAccess.Integration.Tests
             Assert.That(contact.FirstName, Is.EqualTo("David"));
             Assert.That(contact.Surname, Is.EqualTo("Miranda"));
             Assert.That(contact.Telephone, Is.EqualTo("999"));
-        }
-
-        protected override string ConnectionString
-        {
-            get { return ConfigurationManager.AppSettings["ConnectionString"]; }
         }
     }
 }

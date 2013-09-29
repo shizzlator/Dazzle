@@ -1,6 +1,5 @@
 using System.Data;
 using System.Data.SqlClient;
-using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Query;
 using ExampleUsages.DTOs;
@@ -9,22 +8,20 @@ namespace ExampleUsages.Repositories
 {
     public class ContactRepository : IRepository
     {
-        private readonly IDatabaseSession _dbSession;
+        private readonly IDatabaseSession _databaseSession;
 
-        //private readonly IDataQueryBuilder _dataQueryBuilder;
-
-        public ContactRepository(IDatabaseSession dbSession)
+        public ContactRepository(IDatabaseSession databaseSession)
         {
-            _dbSession = dbSession;
+            _databaseSession = databaseSession;
         }
 
         //SIMPLE INSERT - using Stored Proc (note the DataQueryBuilder method BuildStoredQuery())
         public int Create(Contact contact)
         {
             //In this example it would be the Sproc responsibility to pass back ID, prob using SCOPE_IDENTITY()
-            return (int)_dbSession.ExecuteScalar
+            return (int)_databaseSession.ExecuteScalar
             (
-                _dbSession.CreateQuery()
+                _databaseSession.CreateQuery()
                 .WithStoredProc("CreateContact")
                 .WithParam("@FirstName", contact.FirstName)
                 .WithParam("@Surname", contact.Surname)
@@ -43,7 +40,7 @@ namespace ExampleUsages.Repositories
                                                Type = SqlDbType.Int
                                            };
 
-            var dataQuery = _dbSession.CreateQuery()
+            var dataQuery = _databaseSession.CreateQuery()
                 .WithQueryText("create_contact")
                 .WithParam("@ContactId", contactIdOutputParam)
                 .WithParam("@FirstName", contact.FirstName)
@@ -52,16 +49,16 @@ namespace ExampleUsages.Repositories
 
             //Need to cast it to an SqlParameter as the Mapping of data types to the generic DataParameter is whack.
             //TODO: An SqlInputOutputParameter class would end this fuckery.
-            contact.Id = (int)((SqlParameter)_dbSession.ExecuteUpdate(dataQuery, "@ContactId")).Value;
+            contact.Id = (int)((SqlParameter)_databaseSession.ExecuteUpdate(dataQuery, "@ContactId")).Value;
             return contact;
         }
 
         //SIMPLE GET - Using DataQueryBuilder
         public Contact Get(int contactId)
         {
-            var reader = _dbSession.ExecuteReader
+            var reader = _databaseSession.ExecuteReader
            (
-               _dbSession.CreateQuery()
+               _databaseSession.CreateQuery()
                .WithQueryText("select * from contact where ID = @contactId")
                .WithParam("@contactId", contactId)
             );
@@ -79,12 +76,12 @@ namespace ExampleUsages.Repositories
         //INLINE PARAMETERISED QUERY
         public Contact RunQuery(string queryText, params QueryParameters[] queryParams)
         {
-            var dataQuery = _dbSession.CreateQuery().WithQueryText(queryText);
+            var dataQuery = _databaseSession.CreateQuery().WithQueryText(queryText);
             foreach (var queryParam in queryParams)
             {
                 dataQuery = dataQuery.WithParam(queryParam.Name, queryParam.Value);
             }
-            using (var reader = _dbSession.ExecuteReader(dataQuery))
+            using (var reader = _databaseSession.ExecuteReader(dataQuery))
             {
                 return reader.Read() ? new Contact()
                     {
@@ -98,7 +95,7 @@ namespace ExampleUsages.Repositories
         //QUERY - Using DataQuery class
         public Contact RunQuery(IDataQuery dataQuery)
         {
-            var reader = _dbSession.ExecuteReader(dataQuery);
+            var reader = _databaseSession.ExecuteReader(dataQuery);
             using (reader)
             {
                 return reader.Read() ? new Contact()
@@ -110,34 +107,9 @@ namespace ExampleUsages.Repositories
             }
         }
 
-        public void Save()
+        public void Save(Contact contact)
         {
-
-        }
-    }
-
-    public class UnitOfWorkExample
-    {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UnitOfWorkExample()
-        {
-            
-        }
-
-        public UnitOfWorkExample(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
-        public void SaveContact(Contact contact)
-        {
-            _unitOfWork.Repository<ContactRepository>().Save();
-        }
-
-        public void Blah()
-        {
-            new UnitOfWork("connectionString");
+            //This is where I would save my Contact using update(has Id) or create (no Id)
         }
     }
 }
