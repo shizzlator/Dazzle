@@ -4,11 +4,11 @@ namespace DataAccess.Unit.Tests.Fakes
 {
     public class FakeRepository : IRepository
     {
-        private readonly IDatabaseSessionFactory _databaseSessionFactory;
+        private readonly IDatabaseSession _databaseSession;
 
-        public FakeRepository(IDatabaseSessionFactory databaseSessionFactory)
+        public FakeRepository(IDatabaseSession databaseSession)
         {
-            _databaseSessionFactory = databaseSessionFactory;
+            _databaseSession = databaseSession;
         }
     }
 }

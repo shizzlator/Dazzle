@@ -33,4 +33,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
  [assembly: AssemblyVersion("1.0.*")]
  [assembly: InternalsVisibleTo("DataAccess.Unit.Tests")]
+ [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 //[assembly: AssemblyVersion("1.0.0.0")]

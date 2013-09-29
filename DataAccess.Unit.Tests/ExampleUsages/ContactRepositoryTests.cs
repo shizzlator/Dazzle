@@ -1,6 +1,6 @@
 using System.Data;
 using DataAccess.Interfaces;
-using DataAccess.TestHelpers;
+using DataAccess.Query;
 using ExampleUsages.DTOs;
 using ExampleUsages.Repositories;
 using Moq;
@@ -22,12 +22,12 @@ namespace DataAccess.Unit.Tests.ExampleUsages
             _contact = new Contact() { FirstName = "David", Surname = "Miranda", Telephone = "666" };
             _dataReader = new Mock<IDataReader>();
             _dataReader.Setup(x => x.Read()).Returns(true);
-            _dataReader.Setup(x => x["FirstName"]).Returns("David");
-            _dataReader.Setup(x => x["Surname"]).Returns("Miranda");
-            _dataReader.Setup(x => x["Telephone"]).Returns("666");
-
-            _databaseSession = new Mock<IDatabaseSession>();
+            _dataReader.Setup(x => x.Get<string>("FirstName")).Returns("David");
+            _dataReader.Setup(x => x.Get<string>("Surname")).Returns("Miranda");
+            _dataReader.Setup(x => x.Get<string>("Telephone")).Returns("666");
             
+            _databaseSession = new Mock<IDatabaseSession>();
+            _databaseSession.Setup(x => x.CreateQuery()).Returns(new DataQuery());
             _contactRepository = new ContactRepository(_databaseSession.Object);
         }
 
@@ -38,7 +38,7 @@ namespace DataAccess.Unit.Tests.ExampleUsages
 
             _contact.Id = _contactRepository.Create(_contact);
 
-            Assert.That((object) _contact.Id, Is.EqualTo(1024));
+            Assert.That(_contact.Id, Is.EqualTo(1024));
         }
 
         [Test]
@@ -48,9 +48,9 @@ namespace DataAccess.Unit.Tests.ExampleUsages
 
             var contact = _contactRepository.Get(5);
 
-            Assert.That((object) contact.FirstName, Is.EqualTo("David"));
-            Assert.That((object) contact.Surname, Is.EqualTo("Miranda"));
-            Assert.That((object) contact.Telephone, Is.EqualTo("666"));
+            Assert.That(contact.FirstName, Is.EqualTo("David"));
+            Assert.That(contact.Surname, Is.EqualTo("Miranda"));
+            Assert.That(contact.Telephone, Is.EqualTo("666"));
         }
     }
 }

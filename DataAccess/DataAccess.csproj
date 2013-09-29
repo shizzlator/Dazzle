@@ -43,9 +43,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReaderExtensions.cs" />
+    <Compile Include="DataReaderExtensions.cs" />
     <Compile Include="Session\DatabaseSessionFactory.cs" />
     <Compile Include="Session\DatabaseSession.cs" />
     <Compile Include="Query\DataParam.cs" />

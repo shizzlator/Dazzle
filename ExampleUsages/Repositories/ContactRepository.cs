@@ -26,7 +26,7 @@ namespace ExampleUsages.Repositories
             return (int)_dbSession.ExecuteScalar
             (
                 _dbSession.CreateQuery()
-                .WithQueryText("create_contact")
+                .WithStoredProc("CreateContact")
                 .WithParam("@FirstName", contact.FirstName)
                 .WithParam("@Surname", contact.Surname)
                 .WithParam("@Telephone", contact.Telephone)

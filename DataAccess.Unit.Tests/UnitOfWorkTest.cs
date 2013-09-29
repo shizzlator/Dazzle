@@ -20,7 +20,7 @@ namespace DataAccess.Unit.Tests
             _databaseSession = new Mock<IDatabaseSession>();
             _repositoryFactory = new Mock<IRepositoryFactory>();
             _databaseSessionFactory = new Mock<IDatabaseSessionFactory>();
-            _expectedRepository = new FakeRepository(_databaseSessionFactory.Object);
+            _expectedRepository = new FakeRepository(_databaseSession.Object);
 
             _databaseSessionFactory.Setup(x => x.CreateSession()).Returns(_databaseSession.Object);
 

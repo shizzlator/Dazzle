@@ -8,25 +8,22 @@ using NUnit.Framework;
 namespace DataAccess.Unit.Tests
 {
     [TestFixture]
-    public class DbCommandFactoryTest
+    public class DatabaseCommandBuilderTest
     {
-        private Mock<IDatabaseCommandProvider> _connectionManager;
         private DatabaseCommandBuilder _databaseCommandBuilder;
-        private DataQuery _dataQuery;
+        private Mock<IDatabaseCommandProvider> _connectionManager;
         private Mock<IDbCommand> _dbCommand;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParmeterCollection;
-        private string _expectedCommandText = "command text";
 
         [SetUp]
         public void SetUp()
         {
             _connectionManager = new Mock<IDatabaseCommandProvider>();
-            _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
-            _dataQuery = new DataQuery() { CommandText = _expectedCommandText };
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParmeterCollection = new Mock<IDataParameterCollection>();
+            _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
 
             _connectionManager.Setup(x => x.CreateCommandForCurrentConnection()).Returns(_dbCommand.Object);
             _dbCommand.Setup(x => x.CreateParameter()).Returns(_dataParameter.Object);
@@ -37,7 +34,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldObtainAFreshCommandForTheCurrentConnection()
         {
             //When
-            var command = _databaseCommandBuilder.CreateCommandFor(_dataQuery);
+            var command = _databaseCommandBuilder.CreateCommandFor(new DataQuery());
     
             //Then
             _connectionManager.Verify(x => x.CreateCommandForCurrentConnection(), Times.Once());
@@ -47,25 +44,28 @@ namespace DataAccess.Unit.Tests
         [Test]
         public void ShouldInitaliseCommandProperties()
         {
-            //When
-            _databaseCommandBuilder.CreateCommandFor(_dataQuery);
+            //Given
+            var dataQuery = new DataQuery().WithStoredProc("Get_Boobies");
 
+            //When
+            _databaseCommandBuilder.CreateCommandFor(dataQuery);
 
             //Then
-            _dbCommand.VerifySet(x => x.CommandText = _expectedCommandText);
-            _dbCommand.VerifySet(x => x.CommandType = CommandType.Text);
+            _dbCommand.VerifySet(x => x.CommandText = "Get_Boobies");
+            _dbCommand.VerifySet(x => x.CommandType = CommandType.StoredProcedure);
         }
 
         [Test]
         public void ShouldInitialiseCommandDataParameters()
         {
             //Given
-            _dataQuery.WithParam("Title", "Mr");
-            _dataQuery.WithParam("FirstName", "David");
-            _dataQuery.WithParam("Surname", "Miranda");
+            var dataQuery = new DataQuery()
+                .WithParam("Title", "Mr")
+                .WithParam("FirstName", "David")
+                .WithParam("Surname", "Miranda");
 
             //When
-            _databaseCommandBuilder.CreateCommandFor(_dataQuery);
+            _databaseCommandBuilder.CreateCommandFor(dataQuery);
 
             //Then
             _dataParameter.VerifySet(x => x.ParameterName = "Title", Times.Once());

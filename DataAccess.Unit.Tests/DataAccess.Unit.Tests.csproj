@@ -60,7 +60,7 @@
     <Compile Include="DatabaseCommandProviderTest.cs" />
     <Compile Include="DataQueryBuilderTest.cs" />
     <Compile Include="DataReaderTest.cs" />
-    <Compile Include="DbCommandFactoryTest.cs" />
+    <Compile Include="DatabaseCommandBuilderTest.cs" />
     <Compile Include="ExampleUsages\ContactRepositoryTests.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
