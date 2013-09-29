@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataReaderExtensions.cs" />
+    <Compile Include="Interfaces\IDatabaseReader.cs" />
     <Compile Include="Session\DatabaseSessionFactory.cs" />
     <Compile Include="Session\DatabaseSession.cs" />
     <Compile Include="Query\DataParam.cs" />
@@ -70,7 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\QueryParameters.cs" />
     <Compile Include="RepositoryFactory.cs" />
+    <Compile Include="Session\IDatabaseReaderFactory.cs" />
     <Compile Include="SqlConnectionProvider.cs" />
+    <Compile Include="SqlDatabaseReader.cs" />
     <Compile Include="TestHelpers\TransactionalTestFixture.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="UnitOfWork.cs" />

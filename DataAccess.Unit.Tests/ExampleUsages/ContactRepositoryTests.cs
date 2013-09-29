@@ -14,13 +14,13 @@ namespace DataAccess.Unit.Tests.ExampleUsages
         private Mock<IDatabaseSession> _databaseSession;
         private ContactRepository _contactRepository;
         private Contact _contact;
-        private Mock<IDataReader> _dataReader;
+        private Mock<IDatabaseReader> _dataReader;
 
         [SetUp]
         public void SetUp()
         {
             _contact = new Contact() { FirstName = "David", Surname = "Miranda", Telephone = "666" };
-            _dataReader = new Mock<IDataReader>();
+            _dataReader = new Mock<IDatabaseReader>();
             _dataReader.Setup(x => x.Read()).Returns(true);
             _dataReader.Setup(x => x.Get<string>("FirstName")).Returns("David");
             _dataReader.Setup(x => x.Get<string>("Surname")).Returns("Miranda");

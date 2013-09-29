@@ -27,7 +27,8 @@ namespace DataAccess.Session
             var transactionManager = new TransactionManager(sqlConnectionProvider);
             var databaseConnectionManager = new DatabaseCommandProvider(sqlConnectionProvider, transactionManager);
             var databaseCommandCreator = new DatabaseCommandBuilder(databaseConnectionManager);
-            return new DatabaseSession(databaseCommandCreator, transactionManager);
+            var databaseReaderFactory = new SqlDatabaseReaderFactory();
+            return new DatabaseSession(databaseCommandCreator, transactionManager, databaseReaderFactory);
         }
     }
 }

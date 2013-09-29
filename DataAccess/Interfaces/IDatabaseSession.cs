@@ -8,7 +8,7 @@ namespace DataAccess.Interfaces
         IDataQuery CreateQuery();
         object ExecuteScalar(IDataQuery dataQuery);
         int ExecuteUpdate(IDataQuery dataQuery);
-        IDataReader ExecuteReader(IDataQuery dataQuery);
+        IDatabaseReader ExecuteReader(IDataQuery dataQuery);
         IDataParameter ExecuteUpdate(IDataQuery dataQuery, string outputDataParameter);
 
         void BeginTransaction();

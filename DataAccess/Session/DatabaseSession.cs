@@ -9,11 +9,13 @@ namespace DataAccess.Session
     {
         private readonly IDatabaseCommandBuilder _databaseCommandBuilder;
         private readonly ITransactionManager _transactionManager;
+        private IDatabaseReaderFactory _databaseReaderFactory;
 
-        public DatabaseSession(IDatabaseCommandBuilder databaseCommandBuilder, ITransactionManager transactionManager)
+        public DatabaseSession(IDatabaseCommandBuilder databaseCommandBuilder, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory)
         {
             _databaseCommandBuilder = databaseCommandBuilder;
             _transactionManager = transactionManager;
+            _databaseReaderFactory = databaseReaderFactory;
         }
 
         public IDataQuery CreateQuery()
@@ -91,7 +93,7 @@ namespace DataAccess.Session
             }
         }
 
-        public IDataReader ExecuteReader(IDataQuery dataQuery)
+        public IDatabaseReader ExecuteReader(IDataQuery dataQuery)
         {
             IDbConnection connection = null;
             try
@@ -101,9 +103,9 @@ namespace DataAccess.Session
                     connection = dbCommand.Connection;
 
                     if (_transactionManager.TransactionInProgress)
-                        return dbCommand.ExecuteReader();
+                        return _databaseReaderFactory.CreateDataReader(dbCommand.ExecuteReader());
                     else
-                        return dbCommand.ExecuteReader(CommandBehavior.CloseConnection);
+                        return _databaseReaderFactory.CreateDataReader(dbCommand.ExecuteReader(CommandBehavior.CloseConnection));
                 }
             }
             catch (Exception)

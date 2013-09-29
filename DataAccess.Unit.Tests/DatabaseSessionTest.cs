@@ -16,6 +16,7 @@ namespace DataAccess.Unit.Tests
         private DatabaseSession _databaseSession;
         private Mock<ITransactionManager> _transactionManager;
         private Mock<IDbConnection> _connection;
+        private Mock<IDatabaseReaderFactory> _databaseReaderFactory;
 
         [SetUp]
         public void BeforeEachTest()
@@ -24,7 +25,8 @@ namespace DataAccess.Unit.Tests
             _commandFactory = new Mock<IDatabaseCommandBuilder>();
             _command = new Mock<IDbCommand>();
             _transactionManager = new Mock<ITransactionManager>();
-            _databaseSession = new DatabaseSession(_commandFactory.Object, _transactionManager.Object);
+            _databaseReaderFactory = new Mock<IDatabaseReaderFactory>();
+            _databaseSession = new DatabaseSession(_commandFactory.Object, _transactionManager.Object, _databaseReaderFactory.Object);
             _connection = new Mock<IDbConnection>();
             _command.Setup(x => x.Connection).Returns(_connection.Object);
             _commandFactory.Setup(x => x.CreateCommandFor(It.IsAny<DataQuery>())).Returns(_command.Object);
@@ -69,7 +71,7 @@ namespace DataAccess.Unit.Tests
             //Then
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
             _command.Verify(x => x.ExecuteReader(CommandBehavior.CloseConnection), Times.Once());
-            Assert.That(reader, Is.EqualTo(dataReader.Object));
+            _databaseReaderFactory.Verify(x => x.CreateDataReader(dataReader.Object), Times.Once());
             _command.Verify(x => x.Dispose(), Times.Once());
         }
 
@@ -120,7 +122,7 @@ namespace DataAccess.Unit.Tests
             _commandFactory.Verify(x => x.CreateCommandFor(_dataQuery), Times.Once());
             _command.Verify(x => x.ExecuteReader(), Times.Once());
             _command.Verify(x => x.ExecuteReader(CommandBehavior.CloseConnection), Times.Never());
-            Assert.That(reader, Is.EqualTo(dataReader.Object));
+            _databaseReaderFactory.Verify(x => x.CreateDataReader(dataReader.Object), Times.Once());
             _command.Verify(x => x.Dispose(), Times.Once());
         }
     }
