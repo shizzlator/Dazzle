@@ -8,7 +8,7 @@ namespace ExampleUsages
 //        public void GetUser(int Id)
 //        {
 //            new UnitOfWork().Repository<Repository>().GetName(2);
-//            new RepositoryContainer().GetInstanceOf<Repository>().GetName(3);
+//            new repositoryFactory().GetInstanceOf<Repository>().GetName(3);
 //        }
 //    }
 //

@@ -3,9 +3,7 @@ using DataAccess.Query;
 using DataAccess.TestHelpers;
 using ExampleUsages.DTOs;
 using ExampleUsages.Repositories;
-using ExampleUsages.Repositories.Interfaces;
 using NUnit.Framework;
-using StructureMap;
 
 namespace DataAccess.Integration.Tests
 {
@@ -13,11 +11,6 @@ namespace DataAccess.Integration.Tests
     {
         private int _contactId;
         private Contact _contact;
-
-        public ContactRepositoryTest()
-        {
-            ObjectFactory.Container.Configure(x => x.For<IContactRepository>().Use<ContactRepository>());
-        }
 
         [SetUp]
         public void BeforeEachTest()
@@ -27,7 +20,7 @@ namespace DataAccess.Integration.Tests
         }
 
         [Test]
-        public void ShouldGetContactUsingRunQueryMethodWithInlineParameterisedSQL()
+        public void ShouldGetContactUsingRunQueryMethodWithInlineParameterisedSql()
         {
             //When - This could be a generic repository
             var contact = UnitOfWork.Repository<ContactRepository>().RunQuery("select * from Contact where FirstName = @FirstName", new QueryParameters("@FirstName", "David"));

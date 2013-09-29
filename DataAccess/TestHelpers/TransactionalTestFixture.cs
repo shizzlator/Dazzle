@@ -1,21 +1,17 @@
 ﻿using DataAccess.Interfaces;
 using NUnit.Framework;
-using StructureMap;
 
 namespace DataAccess.TestHelpers
 {
-    public class TransactionalTestFixture
+    public abstract class TransactionalTestFixture
     {
-        protected virtual string ConnectionString { get; set; }
+        abstract protected string ConnectionString { get; }
         protected virtual IUnitOfWork UnitOfWork { get; set; }
-        protected virtual DataAccessStructureMapWireUp DataAccessStructureMapWireUp { get; set; }
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            DataAccessStructureMapWireUp = new DataAccessStructureMapWireUp();
-            DataAccessStructureMapWireUp.Initialise(ObjectFactory.Container, ConnectionString);
-            UnitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
+            UnitOfWork = new UnitOfWork(ConnectionString);
         }
 
         [TestFixtureTearDown]

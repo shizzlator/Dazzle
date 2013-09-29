@@ -11,10 +11,8 @@ namespace DataAccess.Unit.Tests
         [Test]
          public void ShouldCreateInstanceOfDesiredRepository()
         {
-            var databaseSessionFactory = new Mock<IDatabaseSessionFactory>();
-            databaseSessionFactory.Setup(x => x.CreateSession()).Returns(new Mock<IDatabaseSession>().Object);
-
-            var testRepository = new RepositoryContainer(databaseSessionFactory.Object);
+            var fakeDatabaseSession = new Mock<IDatabaseSession>();
+            var testRepository = new RepositoryFactory().GetInstanceOf<FakeRepository>(fakeDatabaseSession.Object);
 
              Assert.That(testRepository, Is.Not.Null);
          }

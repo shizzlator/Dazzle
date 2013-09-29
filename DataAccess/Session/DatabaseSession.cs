@@ -40,7 +40,6 @@ namespace DataAccess.Session
             catch(Exception)
             {
                 CleanUp(connection);
-                //TODO: Log Exception
                 throw;
             }
         }
@@ -64,7 +63,6 @@ namespace DataAccess.Session
             catch (Exception)
             {
                 CleanUp(connection);
-                //TODO: Log Exception
                 throw;
             }
         }
@@ -89,7 +87,6 @@ namespace DataAccess.Session
             catch (Exception)
             {
                 CleanUp(connection);
-                //TODO: Log Exception
                 throw;
             }
         }
@@ -112,7 +109,6 @@ namespace DataAccess.Session
             catch (Exception)
             {
                 CleanUp(connection);
-                //TODO: Log Exception
                 throw;
             }
         }

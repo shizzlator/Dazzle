@@ -3,12 +3,12 @@ using System.Data.SqlClient;
 using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Query;
+using DataAccess.Session;
 using ExampleUsages.DTOs;
-using ExampleUsages.Repositories.Interfaces;
 
 namespace ExampleUsages.Repositories
 {
-    public class ContactRepository : IContactRepository, IRepository
+    public class ContactRepository : IRepository
     {
         private readonly IDatabaseSession _dbSession;
 
@@ -78,7 +78,6 @@ namespace ExampleUsages.Repositories
         }
 
         //INLINE PARAMETERISED QUERY
-
         public Contact RunQuery(string queryText, params QueryParameters[] queryParams)
         {
             var dataQuery = _dbSession.CreateQuery().WithQueryText(queryText);
@@ -98,7 +97,6 @@ namespace ExampleUsages.Repositories
         }
 
         //QUERY - Using DataQuery class
-
         public Contact RunQuery(IDataQuery dataQuery)
         {
             var reader = _dbSession.ExecuteReader(dataQuery);
@@ -111,6 +109,36 @@ namespace ExampleUsages.Repositories
                     Telephone = reader.Get<string>("Telephone")
                 } : null;
             }
+        }
+
+        public void Save()
+        {
+
+        }
+    }
+
+    public class UnitOfWorkExample
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UnitOfWorkExample()
+        {
+            
+        }
+
+        public UnitOfWorkExample(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public void SaveContact(Contact contact)
+        {
+            _unitOfWork.Repository<ContactRepository>().Save();
+        }
+
+        public void Blah()
+        {
+            new UnitOfWork("connectionString");
         }
     }
 }
