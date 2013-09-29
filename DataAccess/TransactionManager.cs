@@ -4,7 +4,7 @@ using DataAccess.Interfaces;
 
 namespace DataAccess
 {
-    public class TransactionManager : ITransactionManager
+    internal class TransactionManager : ITransactionManager
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider;
 

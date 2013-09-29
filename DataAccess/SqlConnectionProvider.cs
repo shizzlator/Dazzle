@@ -5,7 +5,7 @@ using DataAccess.Interfaces;
 
 namespace DataAccess
 {
-    public class SqlConnectionProvider : IDatabaseConnectionProvider
+    internal class SqlConnectionProvider : IDatabaseConnectionProvider
     {
         [ThreadStatic]
         private static IDbConnection _connection;

@@ -3,7 +3,6 @@ using System.Data.SqlClient;
 using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Query;
-using DataAccess.Session;
 using ExampleUsages.DTOs;
 
 namespace ExampleUsages.Repositories

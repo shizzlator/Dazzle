@@ -9,9 +9,9 @@ namespace DataAccess.Session
     {
         private readonly IDatabaseCommandBuilder _databaseCommandBuilder;
         private readonly ITransactionManager _transactionManager;
-        private IDatabaseReaderFactory _databaseReaderFactory;
+        private readonly IDatabaseReaderFactory _databaseReaderFactory;
 
-        public DatabaseSession(IDatabaseCommandBuilder databaseCommandBuilder, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory)
+        internal DatabaseSession(IDatabaseCommandBuilder databaseCommandBuilder, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory)
         {
             _databaseCommandBuilder = databaseCommandBuilder;
             _transactionManager = transactionManager;

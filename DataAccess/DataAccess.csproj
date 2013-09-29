@@ -62,7 +62,6 @@
     <Compile Include="Interfaces\IDataQueryBuilder.cs" />
     <Compile Include="Interfaces\IDatabaseCommandBuilder.cs" />
     <Compile Include="Interfaces\IDatabaseCommandProvider.cs" />
-    <Compile Include="Interfaces\IDbSessionProvider.cs" />
     <Compile Include="Interfaces\IRepositoryFactory.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ITransactionManager.cs" />

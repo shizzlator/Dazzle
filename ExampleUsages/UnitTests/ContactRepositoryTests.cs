@@ -1,4 +1,3 @@
-using System.Data;
 using DataAccess.Interfaces;
 using DataAccess.Query;
 using ExampleUsages.DTOs;
@@ -6,7 +5,7 @@ using ExampleUsages.Repositories;
 using Moq;
 using NUnit.Framework;
 
-namespace DataAccess.Unit.Tests.ExampleUsages
+namespace ExampleUsages.UnitTests
 {
     [TestFixture]
     public class ContactRepositoryTests

@@ -4,7 +4,7 @@ using DataAccess.Interfaces;
 
 namespace DataAccess
 {
-    public class SqlDatabaseReader : IDatabaseReader
+    internal class SqlDatabaseReader : IDatabaseReader
     {
         private readonly IDataReader _dataReader;
 

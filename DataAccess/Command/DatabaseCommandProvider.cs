@@ -3,7 +3,7 @@ using DataAccess.Interfaces;
 
 namespace DataAccess.Command
 {
-    public class DatabaseCommandProvider : IDatabaseCommandProvider
+    internal class DatabaseCommandProvider : IDatabaseCommandProvider
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider;
         private readonly ITransactionManager _transactionManager;

@@ -60,7 +60,6 @@
     <Compile Include="DatabaseCommandProviderTest.cs" />
     <Compile Include="DataQueryBuilderTest.cs" />
     <Compile Include="DatabaseCommandBuilderTest.cs" />
-    <Compile Include="ExampleUsages\ContactRepositoryTests.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryContainerTest.cs" />
@@ -80,6 +79,7 @@
       <Name>ExampleUsages</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

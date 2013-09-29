@@ -33,4 +33,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
  [assembly: AssemblyVersion("1.0.*")]
  [assembly: InternalsVisibleTo("DataAccess.Unit.Tests")]
+ [assembly: InternalsVisibleTo("Castle.DynamicProxy.Generators")]
+ [assembly: InternalsVisibleTo("Castle.DynamicProxy")]
+ [assembly: InternalsVisibleTo("Moq")]
 //[assembly: AssemblyVersion("1.0.0.0")]
