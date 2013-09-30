@@ -106,5 +106,6 @@ namespace DataAccess
         public int Depth { get { return _dataReader.Depth; } }
         public bool IsClosed { get { return _dataReader.IsClosed; } }
         public int RecordsAffected { get { return _dataReader.RecordsAffected; } }
+        public int FieldCount { get { return _dataReader.FieldCount; } }
     }
 }
