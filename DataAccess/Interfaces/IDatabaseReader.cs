@@ -6,7 +6,6 @@ namespace DataAccess.Interfaces
     public interface IDatabaseReader : IDisposable
     {
         T Get<T>(string fieldName);
-        void Dispose();
         string GetName(int i);
         string GetDataTypeName(int i);
         Type GetFieldType(int i);
@@ -24,5 +23,6 @@ namespace DataAccess.Interfaces
         int Depth { get; }
         bool IsClosed { get; }
         int RecordsAffected { get; }
+        int FieldCount { get; }
     }
 }

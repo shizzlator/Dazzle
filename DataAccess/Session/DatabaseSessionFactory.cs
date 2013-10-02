@@ -8,11 +8,11 @@ namespace DataAccess.Session
     {
         private readonly string _connectionString;
 
-        internal DatabaseSessionFactory()
+        public DatabaseSessionFactory()
         {
         }
 
-        public DatabaseSessionFactory(string connectionString)
+        internal DatabaseSessionFactory(string connectionString)
         {
             _connectionString = connectionString;
         }
