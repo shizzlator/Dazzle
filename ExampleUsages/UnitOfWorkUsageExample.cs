@@ -1,8 +1,9 @@
 using DataAccess;
 using DataAccess.Interfaces;
 using ExampleUsages.DTOs;
+using ExampleUsages.Repositories;
 
-namespace ExampleUsages.Repositories
+namespace ExampleUsages
 {
     public class UnitOfWorkUsageExample
     {
@@ -10,18 +11,12 @@ namespace ExampleUsages.Repositories
 
         public UnitOfWorkUsageExample(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = new UnitOfWork("Connection String!!!");
         }
 
         public void SaveContact(Contact contact)
         {
             _unitOfWork.Repository<ContactRepository>().Save(contact);
-        }
-
-        public void UnitOfWorkWireUp()
-        {
-            //this can be done in your IoC or poor mans for each repository
-            _unitOfWork = new UnitOfWork("Connection String!!!");
         }
     }
 }
