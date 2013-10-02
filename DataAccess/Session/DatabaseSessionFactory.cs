@@ -1,4 +1,5 @@
 ﻿using DataAccess.Command;
+using DataAccess.Connection;
 using DataAccess.Interfaces;
 
 namespace DataAccess.Session
@@ -25,10 +26,11 @@ namespace DataAccess.Session
         {
             var sqlConnectionProvider = new SqlConnectionProvider(connectionString);
             var transactionManager = new TransactionManager(sqlConnectionProvider);
-            var databaseConnectionManager = new DatabaseCommandProvider(sqlConnectionProvider, transactionManager);
-            var databaseCommandCreator = new DatabaseCommandBuilder(databaseConnectionManager);
+            var databaseConnectionManager = new DatabaseCommandInstaceProvider(sqlConnectionProvider, transactionManager);
+            var databaseCommandCreator = new DatabaseCommandFactory(databaseConnectionManager);
             var databaseReaderFactory = new SqlDatabaseReaderFactory();
-            return new DatabaseSession(databaseCommandCreator, transactionManager, databaseReaderFactory);
+            var connectionHandler = new ConnectionHandler();
+            return new DatabaseSession(databaseCommandCreator, transactionManager, databaseReaderFactory, connectionHandler);
         }
     }
 }

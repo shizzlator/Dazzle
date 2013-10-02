@@ -10,8 +10,8 @@ namespace DataAccess.Unit.Tests
     [TestFixture]
     public class DatabaseCommandBuilderTest
     {
-        private DatabaseCommandBuilder _databaseCommandBuilder;
-        private Mock<IDatabaseCommandProvider> _connectionManager;
+        private DatabaseCommandFactory _databaseCommandFactory;
+        private Mock<IDatabaseCommandInstaceProvider> _connectionManager;
         private Mock<IDbCommand> _dbCommand;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParmeterCollection;
@@ -19,11 +19,11 @@ namespace DataAccess.Unit.Tests
         [SetUp]
         public void SetUp()
         {
-            _connectionManager = new Mock<IDatabaseCommandProvider>();
+            _connectionManager = new Mock<IDatabaseCommandInstaceProvider>();
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParmeterCollection = new Mock<IDataParameterCollection>();
-            _databaseCommandBuilder = new DatabaseCommandBuilder(_connectionManager.Object);
+            _databaseCommandFactory = new DatabaseCommandFactory(_connectionManager.Object);
 
             _connectionManager.Setup(x => x.CreateCommandForCurrentConnection()).Returns(_dbCommand.Object);
             _dbCommand.Setup(x => x.CreateParameter()).Returns(_dataParameter.Object);
@@ -34,7 +34,7 @@ namespace DataAccess.Unit.Tests
         public void ShouldObtainAFreshCommandForTheCurrentConnection()
         {
             //When
-            var command = _databaseCommandBuilder.CreateCommandFor(new DataQuery());
+            var command = _databaseCommandFactory.CreateCommandFor(new DataQuery());
     
             //Then
             _connectionManager.Verify(x => x.CreateCommandForCurrentConnection(), Times.Once());
@@ -48,7 +48,7 @@ namespace DataAccess.Unit.Tests
             var dataQuery = new DataQuery().WithStoredProc("Get_Boobies");
 
             //When
-            _databaseCommandBuilder.CreateCommandFor(dataQuery);
+            _databaseCommandFactory.CreateCommandFor(dataQuery);
 
             //Then
             _dbCommand.VerifySet(x => x.CommandText = "Get_Boobies");
@@ -65,7 +65,7 @@ namespace DataAccess.Unit.Tests
                 .WithParam("Surname", "Miranda");
 
             //When
-            _databaseCommandBuilder.CreateCommandFor(dataQuery);
+            _databaseCommandFactory.CreateCommandFor(dataQuery);
 
             //Then
             _dataParameter.VerifySet(x => x.ParameterName = "Title", Times.Once());

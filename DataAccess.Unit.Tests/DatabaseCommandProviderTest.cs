@@ -11,7 +11,7 @@ namespace DataAccess.Unit.Tests
     {
         private Mock<IDatabaseConnectionProvider> _connectionProvider;
         private Mock<IDbConnection> _connection;
-        private DatabaseCommandProvider _databaseCommandProvider;
+        private DatabaseCommandInstaceProvider _databaseCommandInstaceProvider;
         private Mock<ITransactionManager> _transactionManager;
 
         [SetUp]
@@ -21,14 +21,14 @@ namespace DataAccess.Unit.Tests
             _connection = new Mock<IDbConnection>();
             _connectionProvider.Setup(x => x.GetOpenConnection()).Returns(_connection.Object);
             _transactionManager = new Mock<ITransactionManager>();
-            _databaseCommandProvider = new DatabaseCommandProvider(_connectionProvider.Object, _transactionManager.Object);
+            _databaseCommandInstaceProvider = new DatabaseCommandInstaceProvider(_connectionProvider.Object, _transactionManager.Object);
         }
 
         [Test]
         public void ShouldCreateNewCommandForConnection()
         {
             //When
-            _databaseCommandProvider.CreateCommandForCurrentConnection();
+            _databaseCommandInstaceProvider.CreateCommandForCurrentConnection();
 
             //Then
             _connectionProvider.Verify(x => x.GetOpenConnection(), Times.Once());

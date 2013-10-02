@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using DataAccess.Interfaces;
 
-namespace DataAccess
+namespace DataAccess.Connection
 {
     internal class SqlConnectionProvider : IDatabaseConnectionProvider
     {

@@ -7,15 +7,17 @@ namespace DataAccess.Session
 {
     public class DatabaseSession : IDatabaseSession
     {
-        private readonly IDatabaseCommandBuilder _databaseCommandBuilder;
+        private readonly IDatabaseCommandFactory _databaseCommandFactory;
         private readonly ITransactionManager _transactionManager;
         private readonly IDatabaseReaderFactory _databaseReaderFactory;
+        private readonly IConnectionHandler _connectionHandler;
 
-        internal DatabaseSession(IDatabaseCommandBuilder databaseCommandBuilder, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory)
+        internal DatabaseSession(IDatabaseCommandFactory databaseCommandFactory, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory, IConnectionHandler connectionHandler)
         {
-            _databaseCommandBuilder = databaseCommandBuilder;
+            _databaseCommandFactory = databaseCommandFactory;
             _transactionManager = transactionManager;
             _databaseReaderFactory = databaseReaderFactory;
+            _connectionHandler = connectionHandler;
         }
 
         public IDataQuery CreateQuery()
@@ -25,120 +27,87 @@ namespace DataAccess.Session
 
         public object ExecuteScalar(IDataQuery dataQuery)
         {
-            IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
-                    connection = dbCommand.Connection;
-                    var result = dbCommand.ExecuteScalar();
-
-                    if(!_transactionManager.TransactionInProgress)
-                        connection.Close();
-
-                    return result;
+                    using (_connectionHandler.GetHandler(dbCommand, _transactionManager))
+                    {
+                        return dbCommand.ExecuteScalar();
+                    }
                 }
             }
             catch(Exception)
             {
-                CleanUp(connection);
+                _connectionHandler.CleanUp();
                 throw;
             }
         }
 
         public int ExecuteUpdate(IDataQuery dataQuery)
         {
-            IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
-                    connection = dbCommand.Connection;
-                    var result = dbCommand.ExecuteNonQuery();
-
-                    if (!_transactionManager.TransactionInProgress)
-                        connection.Close();
-
-                    return result;
+                    using (_connectionHandler.GetHandler(dbCommand, _transactionManager))
+                    {
+                        return dbCommand.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception)
             {
-                CleanUp(connection);
+                _connectionHandler.CleanUp();
                 throw;
             }
         }
 
         public IDataParameter ExecuteUpdate(IDataQuery dataQuery, string outputDataParameter)
         {
-            IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
-                    connection = dbCommand.Connection;
-                    dbCommand.ExecuteNonQuery();
-                    var result = (IDataParameter) dbCommand.Parameters[outputDataParameter];
-
-                    if (!_transactionManager.TransactionInProgress)
-                        connection.Close();
-
-                    return result;
+                    using (_connectionHandler.GetHandler(dbCommand, _transactionManager))
+                    {
+                        dbCommand.ExecuteNonQuery();
+                        return (IDataParameter)dbCommand.Parameters[outputDataParameter];    
+                    }
                 }
             }
             catch (Exception)
             {
-                CleanUp(connection);
+                _connectionHandler.CleanUp();
                 throw;
             }
         }
 
         public IDatabaseReader ExecuteReader(IDataQuery dataQuery)
         {
-            IDbConnection connection = null;
             try
             {
-                using (var dbCommand = _databaseCommandBuilder.CreateCommandFor(dataQuery))
+                using (var dbCommand = _databaseCommandFactory.CreateCommandFor(dataQuery))
                 {
-                    connection = dbCommand.Connection;
-
                     if (_transactionManager.TransactionInProgress)
                         return _databaseReaderFactory.CreateDataReader(dbCommand.ExecuteReader());
-                    else
-                        return _databaseReaderFactory.CreateDataReader(dbCommand.ExecuteReader(CommandBehavior.CloseConnection));
+                        
+                    return _databaseReaderFactory.CreateDataReader(dbCommand.ExecuteReader(CommandBehavior.CloseConnection));
                 }
             }
             catch (Exception)
             {
-                CleanUp(connection);
+                _connectionHandler.CleanUp();
                 throw;
-            }
-        }
-
-        private void CleanUp(IDbConnection connection)
-        {
-            if (_transactionManager.TransactionInProgress)
-                _transactionManager.Rollback();
-            if (connection != null && connection.State == ConnectionState.Open)
-            {
-                connection.Close();
             }
         }
 
         public void BeginTransaction()
         {
-            if (!_transactionManager.TransactionInProgress)
-            {
-                _transactionManager.Begin();
-            }
+            _transactionManager.Begin();
         }
 
         public void CommitTransaction()
-        {
-            _transactionManager.Commit();
-        }
-
-        public void CommitAndCloseConnection()
         {
             _transactionManager.Commit();
         }

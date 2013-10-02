@@ -55,7 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseCommandCreatorTest.cs" />
+    <Compile Include="ConnectionHandlerTest.cs" />
+    <Compile Include="DatabaseCommandFactoryTest.cs" />
     <Compile Include="DatabaseSessionTest.cs" />
     <Compile Include="DatabaseCommandProviderTest.cs" />
     <Compile Include="DataQueryBuilderTest.cs" />

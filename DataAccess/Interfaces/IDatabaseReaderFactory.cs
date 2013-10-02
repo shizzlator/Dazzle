@@ -1,7 +1,6 @@
-﻿using System.Data;
-using DataAccess.Interfaces;
+using System.Data;
 
-namespace DataAccess.Session
+namespace DataAccess.Interfaces
 {
     public interface IDatabaseReaderFactory
     {

@@ -2,7 +2,7 @@ using System.Data;
 
 namespace DataAccess.Interfaces
 {
-    public interface IDatabaseCommandBuilder
+    public interface IDatabaseCommandFactory
     {
         IDbCommand CreateCommandFor(IDataQuery dataQuery);
     }

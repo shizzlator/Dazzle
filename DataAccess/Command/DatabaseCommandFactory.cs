@@ -3,19 +3,19 @@ using DataAccess.Interfaces;
 
 namespace DataAccess.Command
 {
-    internal class DatabaseCommandBuilder : IDatabaseCommandBuilder
+    internal class DatabaseCommandFactory : IDatabaseCommandFactory
     {
-        private readonly IDatabaseCommandProvider _databaseCommandProvider;
+        private readonly IDatabaseCommandInstaceProvider _databaseCommandInstaceProvider;
         private IDbCommand _dbCommand;
 
-        public DatabaseCommandBuilder(IDatabaseCommandProvider databaseCommandProvider)
+        public DatabaseCommandFactory(IDatabaseCommandInstaceProvider databaseCommandInstaceProvider)
         {
-            _databaseCommandProvider = databaseCommandProvider;
+            _databaseCommandInstaceProvider = databaseCommandInstaceProvider;
         }
 
         public IDbCommand CreateCommandFor(IDataQuery dataQuery)
         {
-            _dbCommand = _databaseCommandProvider.CreateCommandForCurrentConnection();
+            _dbCommand = _databaseCommandInstaceProvider.CreateCommandForCurrentConnection();
             _dbCommand.CommandType = dataQuery.CommandType;
             _dbCommand.CommandText = dataQuery.CommandText;
 
