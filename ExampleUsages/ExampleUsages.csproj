@@ -54,7 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />
     <Compile Include="Repositories\Interfaces\IContactRepository.cs" />
-    <Compile Include="Repositories\UnitOfWorkUsageExample.cs" />
+    <Compile Include="UnitOfWorkUsageExample.cs" />
     <Compile Include="UnitTests\ContactRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>

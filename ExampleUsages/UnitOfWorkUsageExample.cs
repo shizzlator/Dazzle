@@ -11,6 +11,7 @@ namespace ExampleUsages
 
         public UnitOfWorkUsageExample(IUnitOfWork unitOfWork)
         {
+            //this can be done in your IoC or poor mans
             _unitOfWork = new UnitOfWork("Connection String!!!");
         }
 

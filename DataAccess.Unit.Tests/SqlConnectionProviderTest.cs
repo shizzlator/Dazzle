@@ -1,6 +1,6 @@
 ﻿namespace DataAccess.Unit.Tests
 {
-    public class SqlConnectionProvider
+    public class SqlConnectionProviderTest
     {
          
     }

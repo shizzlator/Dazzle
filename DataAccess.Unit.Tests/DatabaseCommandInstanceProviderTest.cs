@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace DataAccess.Unit.Tests
 {
     [TestFixture]
-    public class DatabaseCommandProviderTest
+    public class DatabaseCommandInstanceProviderTest
     {
         private Mock<IDatabaseConnectionProvider> _connectionProvider;
         private Mock<IDbConnection> _connection;
