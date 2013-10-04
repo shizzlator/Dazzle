@@ -16,5 +16,14 @@ namespace DataAccess.Unit.Tests
 
              Assert.That(testRepository, Is.Not.Null);
          }
+
+        [Test]
+        public void ShouldCreateInstanceOfDesiredRepositoryWithInjectedConntectionString()
+        {
+            var fakeDatabaseSession = new Mock<IDatabaseSession>();
+            var testRepository = new RepositoryFactory("myconnectionstring").GetInstanceOf<FakeRepository>(fakeDatabaseSession.Object);
+
+            Assert.That(testRepository, Is.Not.Null);
+        }
     }
 }
