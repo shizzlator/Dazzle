@@ -17,6 +17,9 @@ namespace DataAccess
         {    
         }
 
+        /// <summary>
+        /// Only use this method if you have already initialised the connection string using the right constructor.
+        /// </summary> 
         public T GetInstanceOf<T>() where T : IRepository
         {
             if(string.IsNullOrEmpty(_connectionString))
@@ -33,20 +36,6 @@ namespace DataAccess
         public T GetInstanceOf<T>(IDatabaseSession databaseSession) where T : IRepository
         {
             return (T)Activator.CreateInstance(typeof(T), databaseSession);
-        }
-    }
-
-    public class Blah
-    {
-        private readonly IRepositoryFactory _repositoryFactory;
-
-        public Blah(IRepositoryFactory repositoryFactory)
-        {
-            _repositoryFactory = repositoryFactory;
-        }
-
-        public Blah() : this(new RepositoryFactory(""))
-        {
         }
     }
 }

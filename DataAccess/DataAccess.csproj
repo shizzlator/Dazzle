@@ -56,14 +56,14 @@
     <Compile Include="Query\DataParam.cs" />
     <Compile Include="Query\DataQuery.cs" />
     <Compile Include="Command\DatabaseCommandFactory.cs" />
-    <Compile Include="Command\DatabaseCommandInstaceProvider.cs" />
+    <Compile Include="Command\DatabaseCommandProvider.cs" />
     <Compile Include="Interfaces\IDatabaseSessionFactory.cs" />
     <Compile Include="Interfaces\IDatabaseConnectionProvider.cs" />
     <Compile Include="Interfaces\IDatabaseSession.cs" />
     <Compile Include="Interfaces\IDataParam.cs" />
     <Compile Include="Interfaces\IDataQuery.cs" />
     <Compile Include="Interfaces\IDatabaseCommandFactory.cs" />
-    <Compile Include="Interfaces\IDatabaseCommandInstaceProvider.cs" />
+    <Compile Include="Interfaces\IDatabaseCommandProvider.cs" />
     <Compile Include="Interfaces\IRepositoryFactory.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ITransactionManager.cs" />

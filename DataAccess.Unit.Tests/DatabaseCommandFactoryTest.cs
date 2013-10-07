@@ -11,7 +11,7 @@ namespace DataAccess.Unit.Tests
     public class DatabaseCommandFactoryTest
     {
         private DatabaseCommandFactory _databaseCommandFactory;
-        private Mock<IDatabaseCommandInstaceProvider> _connectionManager;
+        private Mock<IDatabaseCommandProvider> _connectionManager;
         private Mock<IDbCommand> _dbCommand;
         private Mock<IDbDataParameter> _dataParameter;
         private Mock<IDataParameterCollection> _dataParmeterCollection;
@@ -19,7 +19,7 @@ namespace DataAccess.Unit.Tests
         [SetUp]
         public void SetUp()
         {
-            _connectionManager = new Mock<IDatabaseCommandInstaceProvider>();
+            _connectionManager = new Mock<IDatabaseCommandProvider>();
             _dbCommand = new Mock<IDbCommand>();
             _dataParameter = new Mock<IDbDataParameter>();
             _dataParmeterCollection = new Mock<IDataParameterCollection>();

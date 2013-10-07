@@ -5,17 +5,17 @@ namespace DataAccess.Command
 {
     internal class DatabaseCommandFactory : IDatabaseCommandFactory
     {
-        private readonly IDatabaseCommandInstaceProvider _databaseCommandInstaceProvider;
+        private readonly IDatabaseCommandProvider _databaseCommandProvider;
         private IDbCommand _dbCommand;
 
-        public DatabaseCommandFactory(IDatabaseCommandInstaceProvider databaseCommandInstaceProvider)
+        public DatabaseCommandFactory(IDatabaseCommandProvider databaseCommandProvider)
         {
-            _databaseCommandInstaceProvider = databaseCommandInstaceProvider;
+            _databaseCommandProvider = databaseCommandProvider;
         }
 
         public IDbCommand CreateCommandFor(IDataQuery dataQuery)
         {
-            _dbCommand = _databaseCommandInstaceProvider.CreateCommandForCurrentConnection();
+            _dbCommand = _databaseCommandProvider.CreateCommandForCurrentConnection();
             _dbCommand.CommandType = dataQuery.CommandType;
             _dbCommand.CommandText = dataQuery.CommandText;
 

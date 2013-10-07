@@ -3,13 +3,13 @@ using DataAccess.Interfaces;
 
 namespace DataAccess.Command
 {
-    internal class DatabaseCommandInstaceProvider : IDatabaseCommandInstaceProvider
+    internal class DatabaseCommandProvider : IDatabaseCommandProvider
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider;
         private readonly ITransactionManager _transactionManager;
         private IDbConnection _dbConnection;
 
-        public DatabaseCommandInstaceProvider(IDatabaseConnectionProvider databaseConnectionProvider, ITransactionManager transactionManager)
+        public DatabaseCommandProvider(IDatabaseConnectionProvider databaseConnectionProvider, ITransactionManager transactionManager)
         {
             _databaseConnectionProvider = databaseConnectionProvider;
             _transactionManager = transactionManager;
