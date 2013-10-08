@@ -11,111 +11,128 @@
       \        /       
        `.____.`   
 
-Below is an example repository. (also found in the library project). 
+Below is an example repository (also found in the library project). 
 It shows a few ways in which you can execute queries.
 
 If you want to run things within a transaction then you should use the UnitOfWork class:
+
 - This will wrap anything you do with a transaction - _unitOfWork.Repository<MyRepo>().MyMethod()
-- Remember to call Commit()/Rollback() on the UnitOfWork when you are done.
-- There is also a TransactionalTestFixture included.
-- Inherit from this if you want your integration tests to rollback when they are complete (override the connection string prop)
-- HAVE A LOOK AT THE ACTUAL DATAACCES PROJECT https://github.com/shizzlator/DataAccess for a better understanding!
+- Remember to call Commit()/Rollback() on the UnitOfWork when you are done. EVEN for selects (as it stands).
+- You could call Commit() on request end or by overriding OnActionExecuted or an equivalent event/method.
+- There is also a TransactionalTestFixture included for integration tests. Just inherit from it and override ConnectionString.
+- HAVE A LOOK AT THE SOURCE https://github.com/shizzlator/DataAccess
 
 
-public class ContactRepository : IContactRepository, IRepository
+EXAMPLE OF CONTROLLER (using RepositoryFactory) AND REPOSITORY (using DatabaseSession)
+
+public class HomeController : Controller
+{
+    private readonly IRepositoryFactory _repositoryFactory;
+
+    public HomeController() : this(new RepositoryFactory("My Connection String"))
     {
-        private readonly IDatabaseSession _dbSession;
-        private readonly IDataQueryBuilder _dataQueryBuilder;
+    }
 
-        public ContactRepository(IDatabaseSession dbSession, IDataQueryBuilder dataQueryBuilder)
-        {
-            _dbSession = dbSession;
-            _dataQueryBuilder = dataQueryBuilder;
-        }
+    public HomeController(IRepositoryFactory repositoryFactory)
+    {
+        _repositoryFactory = repositoryFactory;
+    }
 
-        //SIMPLE INSERT - using Stored Proc (note the DataQueryBuilder method BuildStoredQuery())
-        public int Create(Contact contact)
-        {
-            //In this example it would be the Sproc responsibility to pass back ID, prob using SCOPE_IDENTITY()
-            return (int)_dbSession.RunScalarCommandFor
-            (
-                _dataQueryBuilder.WithCommandText("create_contact")
-                .WithParam("@FirstName", contact.FirstName)
-                .WithParam("@Surname", contact.Surname)
-                .WithParam("@Telephone", contact.Telephone).BuildStoredQuery()
-             );
-        }
+    public ActionResult Index()
+    {
+        var user = _repositoryFactory.GetInstanceOf<UserRepository>().GetUser(465);
+        return View(new UserModel(user));
+    }
+}
 
-        //CREATE QUERY - Using stored proc and output param (only caters for one paramter at the moment)
-        public Contact CreateContact(Contact contact)
-        {
-            var contactIdOutputParam = new DataParam //TODO: make an SqlInputOutputParameter class
-                                           {
-                                               Value = 0,
-                                               Direction = ParameterDirection.InputOutput,
-                                               Size = 4,
-                                               Type = SqlDbType.Int
-                                           };
+public class ContactRepository : IRepository
+{
+    private readonly IDatabaseSession _databaseSession;
 
-            var dataQuery = _dataQueryBuilder
-                .WithCommandText("create_contact")
-                .WithParam("@ContactId", contactIdOutputParam)
-                .WithParam("@FirstName", contact.FirstName)
-                .WithParam("@Surname", contact.Surname)
-                .WithParam("@Telephone", contact.Telephone)
-                .BuildTextQuery();
+    public ContactRepository(IDatabaseSession databaseSession)
+    {
+        _databaseSession = databaseSession;
+    }
 
-            //Need to cast it to an SqlParameter as the Mapping of data types to the generic DataParameter is whack.
-            //TODO: An SqlInputOutputParameter class would end this fuckery.
-            contact.Id = (int)((SqlParameter)_dbSession.RunUpdateCommandFor(dataQuery, "@ContactId")).Value;
-            return contact;
-        }
-
-        //SIMPLE GET - Using DataQueryBuilder
-        public Contact Get(int contactId)
-        {
-            var reader = _dbSession.RunReaderFor
-           (
-               _dataQueryBuilder.WithCommandText("select * from contact where ID = @contactId")
-               .WithParam("@contactId", contactId).BuildTextQuery()
+    //SIMPLE INSERT - using Stored Proc (note the DataQueryBuilder method BuildStoredQuery())
+    public int Create(Contact contact)
+    {
+        //In this example it would be the Sproc responsibility to pass back ID, prob using SCOPE_IDENTITY()
+        return (int)_databaseSession.ExecuteScalar
+        (
+            _databaseSession.CreateQuery()
+            .WithStoredProc("CreateContact")
+            .WithParam("@FirstName", contact.FirstName)
+            .WithParam("@Surname", contact.Surname)
+            .WithParam("@Telephone", contact.Telephone)
             );
-            using (reader)
-            {
-                return reader.Read() ? new Contact() { FirstName = (string)reader["FirstName"], Surname = (string)reader["Surname"], Telephone = (string)reader["Telephone"]} : null;
-            }
-        }
+    }
 
-        //INLINE PARAMETERISED QUERY
-        public Contact RunQuery(string query, params QueryParameters[] queryParams)
-        {
-            var queryBuilder = _dataQueryBuilder.WithCommandText(query);
-            foreach (var queryParam in queryParams)
-            {
-                queryBuilder = queryBuilder.WithParam(queryParam.Name, queryParam.Value);
-            }
-            using (var reader = _dbSession.RunReaderFor(queryBuilder.BuildTextQuery()))
-            {
-                return reader.Read() ? new Contact()
-                    {
-                        FirstName = (string)reader["FirstName"], 
-                        Surname = (string)reader["Surname"], 
-                        Telephone = (string)reader["Telephone"]
-                    } : null;
-            }
-        }
+	//SIMPLE UPDATE - using Stored Proc (note the DataQueryBuilder method BuildStoredQuery())
+    public int Update(Contact contact)
+    {
+        //In this example it would be the Sproc responsibility to pass back ID, prob using SCOPE_IDENTITY()
+        return (int)_databaseSession.ExecuteUpdate
+        (
+            _databaseSession.CreateQuery()
+            .WithStoredProc("UpdateContact")
+            .WithParam("@FirstName", contact.FirstName)
+            .WithParam("@Surname", contact.Surname)
+            .WithParam("@Telephone", contact.Telephone)
+            );
+    }
 
-        //QUERY - Using DataQuery class
-        public Contact RunQuery(IDataQuery dataQuery)
+    //SIMPLE GET - Using DataQueryBuilder
+    public Contact Get(int contactId)
+    {
+        var reader = _databaseSession.ExecuteReader
+        (
+            _databaseSession.CreateQuery()
+            .WithQueryText("select * from contact where ID = @contactId")
+            .WithParam("@contactId", contactId)
+        );
+        using (reader)
         {
-            var reader = _dbSession.RunReaderFor(dataQuery);
-            using (reader)
-            {
-                return reader.Read() ? new Contact()
+            return reader.Read() ? new Contact()
                 {
-                    FirstName = (string)reader["FirstName"],
-                    Surname = (string)reader["Surname"],
-                    Telephone = (string)reader["Telephone"]
+                    FirstName = reader.Get<string>("FirstName"),
+                    Surname = reader.Get<string>("Surname"),
+                    Telephone = reader.Get<string>("Telephone")
                 } : null;
-            }
         }
     }
+
+    //INLINE PARAMETERISED QUERY
+    public Contact RunQuery(string queryText, params QueryParameters[] queryParams)
+    {
+        var dataQuery = _databaseSession.CreateQuery().WithQueryText(queryText);
+        foreach (var queryParam in queryParams)
+        {
+            dataQuery = dataQuery.WithParam(queryParam.Name, queryParam.Value);
+        }
+        using (var reader = _databaseSession.ExecuteReader(dataQuery))
+        {
+            return reader.Read() ? new Contact()
+                {
+                    FirstName = reader.Get<string>("FirstName"), 
+                    Surname = reader.Get<string>("Surname"),
+                    Telephone = reader.Get<string>("Telephone")
+                } : null;
+        }
+    }
+
+    //QUERY - Using DataQuery class
+    public Contact RunQuery(IDataQuery dataQuery)
+    {
+        var reader = _databaseSession.ExecuteReader(dataQuery);
+        using (reader)
+        {
+            return reader.Read() ? new Contact()
+            {
+                FirstName = reader.Get<string>("FirstName"),
+                Surname = reader.Get<string>("Surname"),
+                Telephone = reader.Get<string>("Telephone")
+            } : null;
+        }
+    }
+}

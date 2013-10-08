@@ -17,9 +17,6 @@ namespace DataAccess
         {    
         }
 
-        /// <summary>
-        /// Only use this method if you have already initialised the connection string using the right constructor.
-        /// </summary> 
         public T GetInstanceOf<T>() where T : IRepository
         {
             if(string.IsNullOrEmpty(_connectionString))

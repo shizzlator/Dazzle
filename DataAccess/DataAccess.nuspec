@@ -9,11 +9,6 @@
 	<iconUrl>file://S:/Development/nuget/data-access-icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Simple and Testable Data Access Layer</description>
-	<dependencies> 
-	   <group targetFramework="net35">
-		  <dependency id="structuremap" />
-	   </group>
-   </dependencies>
   </metadata>
   <files>
 	<file src="readme.txt" target="" />
