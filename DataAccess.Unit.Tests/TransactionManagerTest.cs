@@ -40,16 +40,6 @@ namespace DataAccess.Unit.Tests
         }
 
         [Test]
-        public void ShouldBeginTransientTransaction()
-        {
-            //When
-            _transactionManager.Begin();
-
-            //Then
-            Assert.That(new TransactionManager(_databaseConnectionProvider.Object).TransientTransaction, Is.EqualTo(_transientTransaction.Object));
-        }
-
-        [Test]
         public void ShouldCommitTransactionWhenOneIsInProgress()
         {
             //Given

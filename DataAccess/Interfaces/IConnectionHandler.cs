@@ -7,5 +7,6 @@ namespace DataAccess.Interfaces
     {
         IConnectionHandler GetHandler(IDbCommand command, ITransactionManager transactionManager);
         void CleanUp();
+        IDbConnection Connection{get;}
     }
 }

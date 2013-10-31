@@ -6,10 +6,9 @@ namespace DataAccess
 {
     internal class TransactionManager : ITransactionManager
     {
-        private readonly IDatabaseConnectionProvider _databaseConnectionProvider;
-
-        [ThreadStatic] 
-        private static IDbTransaction _transientTransaction;
+        private readonly IDatabaseConnectionProvider _databaseConnectionProvider; 
+ 
+        private IDbTransaction _transaction;
 
         public TransactionManager(IDatabaseConnectionProvider databaseConnectionProvider)
         {
@@ -19,17 +18,17 @@ namespace DataAccess
         public void Begin()
         {
             if(!TransactionInProgress)
-                _transientTransaction = _databaseConnectionProvider.GetOpenConnection().BeginTransaction();
+                _transaction = _databaseConnectionProvider.GetOpenConnection().BeginTransaction();
         }
 
-        public IDbTransaction TransientTransaction { get { return _transientTransaction; } }
+        public IDbTransaction Transaction { get { return _transaction; } }
         public void Commit()
         {
             try
             {
-                _transientTransaction.Commit();
-                _transientTransaction.Dispose();
-                _transientTransaction = null;
+                _transaction.Commit();
+                _transaction.Dispose();
+                _transaction = null;
             }
             catch (Exception)
             {
@@ -42,12 +41,12 @@ namespace DataAccess
         {
             if (TransactionInProgress)
             {
-                _transientTransaction.Rollback();
-                _transientTransaction.Dispose();
-                _transientTransaction = null;
+                _transaction.Rollback();
+                _transaction.Dispose();
+                _transaction = null;
             }
         }
 
-        public bool TransactionInProgress { get { return _transientTransaction != null; } }
+        public bool TransactionInProgress { get { return _transaction != null; } }
     }
 }

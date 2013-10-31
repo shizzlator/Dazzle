@@ -6,6 +6,7 @@ namespace DataAccess.Interfaces
     public interface IDatabaseReader : IDisposable
     {
         T Get<T>(string fieldName);
+		T GetOrDefault<T>(string fieldName);
         string GetName(int i);
         string GetDataTypeName(int i);
         Type GetFieldType(int i);

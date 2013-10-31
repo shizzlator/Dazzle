@@ -41,7 +41,7 @@ namespace DataAccess
         public void RollbackAndCloseConnection()
         {
             _databaseSession.RollbackTransaction();
-            DatabaseConnectionContext.Current.Close();
+            _databaseSession.Connection.Close();
         }
 
         public T Repository<T>(string connectionString) where T : IRepository
@@ -49,12 +49,6 @@ namespace DataAccess
             _databaseSession.BeginTransaction();
             return _repositoryFactory.GetInstanceOf<T>(_databaseSessionFactory.CreateSession(connectionString));
         }
-    }
-
-    public class DatabaseConnectionContext
-    {
-        //Neccessarry if there is ever a need for more than just a SqlConnection
-        public static IDbConnection Current { get { return SqlConnectionProvider.Connection; } }
     }
 }
 

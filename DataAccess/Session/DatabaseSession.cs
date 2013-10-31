@@ -10,7 +10,9 @@ namespace DataAccess.Session
         private readonly IDatabaseCommandFactory _databaseCommandFactory;
         private readonly ITransactionManager _transactionManager;
         private readonly IDatabaseReaderFactory _databaseReaderFactory;
-        private readonly IConnectionHandler _connectionHandler;
+        public IConnectionHandler _connectionHandler;
+
+        public IDbConnection Connection { get { return _connectionHandler.Connection; } }
 
         internal DatabaseSession(IDatabaseCommandFactory databaseCommandFactory, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory, IConnectionHandler connectionHandler)
         {

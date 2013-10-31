@@ -7,8 +7,7 @@ namespace DataAccess.Connection
 {
     internal class SqlConnectionProvider : IDatabaseConnectionProvider
     {
-        [ThreadStatic]
-        private static IDbConnection _connection;
+        private IDbConnection _connection;
         private readonly string _connectionString;
 
         public SqlConnectionProvider(string connectionString)
@@ -23,7 +22,7 @@ namespace DataAccess.Connection
             return _connection;
         }
 
-        private static void OpenConnection()
+        private void OpenConnection()
         {
             if (_connection.State == ConnectionState.Closed)
             {
@@ -39,7 +38,7 @@ namespace DataAccess.Connection
             }
         }
 
-        public static IDbConnection Connection
+        public IDbConnection Connection
         {
             get { return _connection; }
         }

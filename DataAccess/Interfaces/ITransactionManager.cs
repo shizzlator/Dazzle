@@ -6,7 +6,7 @@ namespace DataAccess.Interfaces
     {
         void Begin();
         bool TransactionInProgress { get; }
-        IDbTransaction TransientTransaction { get; }
+        IDbTransaction Transaction { get; }
         void Commit();
         void Rollback();
     }

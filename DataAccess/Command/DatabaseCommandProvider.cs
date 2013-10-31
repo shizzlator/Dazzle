@@ -25,7 +25,7 @@ namespace DataAccess.Command
         {
             var command = _dbConnection.CreateCommand();
             if (_transactionManager.TransactionInProgress)
-                command.Transaction = _transactionManager.TransientTransaction;
+                command.Transaction = _transactionManager.Transaction;
             return command;
         }
     }

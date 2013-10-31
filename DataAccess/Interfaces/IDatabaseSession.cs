@@ -14,5 +14,7 @@ namespace DataAccess.Interfaces
         void BeginTransaction();
         void CommitTransaction();
         void RollbackTransaction();
+
+        IDbConnection Connection { get; }
     }
 }
