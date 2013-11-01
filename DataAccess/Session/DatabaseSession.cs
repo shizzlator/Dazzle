@@ -10,9 +10,8 @@ namespace DataAccess.Session
         private readonly IDatabaseCommandFactory _databaseCommandFactory;
         private readonly ITransactionManager _transactionManager;
         private readonly IDatabaseReaderFactory _databaseReaderFactory;
-        public IConnectionHandler _connectionHandler;
-
-        public IDbConnection Connection { get { return _connectionHandler.Connection; } }
+        private readonly IConnectionHandler _connectionHandler;
+		private bool _isDisposing;
 
         internal DatabaseSession(IDatabaseCommandFactory databaseCommandFactory, ITransactionManager transactionManager, IDatabaseReaderFactory databaseReaderFactory, IConnectionHandler connectionHandler)
         {
@@ -118,5 +117,14 @@ namespace DataAccess.Session
         {
             _transactionManager.Rollback();
         }
-    }
+
+		public void Dispose()
+		{
+			if (!_isDisposing)
+			{
+				_isDisposing = true;
+				_connectionHandler.Dispose();
+			}
+		}
+	}
 }

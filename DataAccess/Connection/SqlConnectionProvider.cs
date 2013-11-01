@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 using System.Data.SqlClient;
 using DataAccess.Interfaces;
@@ -7,7 +6,7 @@ namespace DataAccess.Connection
 {
     internal class SqlConnectionProvider : IDatabaseConnectionProvider
     {
-        private IDbConnection _connection;
+		private IDbConnection _connection;
         private readonly string _connectionString;
 
         public SqlConnectionProvider(string connectionString)
@@ -36,11 +35,6 @@ namespace DataAccess.Connection
             {
                 _connection = new SqlConnection(_connectionString);
             }
-        }
-
-        public IDbConnection Connection
-        {
-            get { return _connection; }
         }
     }
 }

@@ -5,7 +5,7 @@ namespace DataAccess.Connection
 {
     public class ConnectionHandler : IConnectionHandler
     {
-        public IDbConnection _connection;
+        private IDbConnection _connection;
         private ITransactionManager _transactionManager;
 
         public void Dispose()
@@ -38,7 +38,6 @@ namespace DataAccess.Connection
         {
             return _connection != null && _connection.State == ConnectionState.Open;
         }
-
 
         public IDbConnection Connection
         {

@@ -41,7 +41,7 @@ namespace DataAccess
         public void RollbackAndCloseConnection()
         {
             _databaseSession.RollbackTransaction();
-            _databaseSession.Connection.Close();
+			_databaseSession.Dispose();
         }
 
         public T Repository<T>(string connectionString) where T : IRepository

@@ -12,14 +12,10 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +72,7 @@
     <Compile Include="Query\QueryParameters.cs" />
     <Compile Include="RepositoryFactory.cs" />
     <Compile Include="SqlDatabaseReader.cs" />
+    <Compile Include="SqlDatabaseReaderFactory.cs" />
     <Compile Include="TestHelpers\TransactionalTestFixture.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="UnitOfWork.cs" />

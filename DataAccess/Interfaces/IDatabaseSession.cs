@@ -3,7 +3,7 @@ using System.Data;
 
 namespace DataAccess.Interfaces
 {
-    public interface IDatabaseSession
+    public interface IDatabaseSession : IDisposable
     {
         IDataQuery CreateQuery();
         object ExecuteScalar(IDataQuery dataQuery);
@@ -14,7 +14,5 @@ namespace DataAccess.Interfaces
         void BeginTransaction();
         void CommitTransaction();
         void RollbackTransaction();
-
-        IDbConnection Connection { get; }
     }
 }

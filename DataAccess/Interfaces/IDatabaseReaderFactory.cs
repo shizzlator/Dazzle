@@ -6,12 +6,4 @@ namespace DataAccess.Interfaces
     {
         IDatabaseReader CreateDataReader(IDataReader dataReader);
     }
-
-    public class SqlDatabaseReaderFactory : IDatabaseReaderFactory
-    {
-        public IDatabaseReader CreateDataReader(IDataReader dataReader)
-        {
-            return new SqlDatabaseReader(dataReader);
-        }
-    }
 }

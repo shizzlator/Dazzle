@@ -7,7 +7,6 @@ namespace DataAccess
     internal class TransactionManager : ITransactionManager
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider; 
- 
         private IDbTransaction _transaction;
 
         public TransactionManager(IDatabaseConnectionProvider databaseConnectionProvider)
