@@ -8,10 +8,17 @@ namespace DataAccess.Connection
     {
 		private IDbConnection _connection;
         private readonly string _connectionString;
+        private readonly IDatabaseConnectionFactory _connectionFactory;
 
-        public SqlConnectionProvider(string connectionString)
+        public SqlConnectionProvider(string connectionString) : this(connectionString, new DatabaseConnectionFactory())
         {
             _connectionString = connectionString;
+        }
+
+        internal SqlConnectionProvider(string connectionString, IDatabaseConnectionFactory connectionFactory)
+        {
+            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public IDbConnection GetOpenConnection()
@@ -33,7 +40,7 @@ namespace DataAccess.Connection
         {
             if (_connection == null || string.IsNullOrEmpty(_connection.ConnectionString))
             {
-                _connection = new SqlConnection(_connectionString);
+                _connection = _connectionFactory.SqlConnection(_connectionString);
             }
         }
     }

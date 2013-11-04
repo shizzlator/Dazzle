@@ -3,7 +3,7 @@ using DataAccess.Interfaces;
 
 namespace DataAccess.Connection
 {
-    public class ConnectionHandler : IConnectionHandler
+    internal class ConnectionHandler : IConnectionHandler
     {
         private IDbConnection _connection;
         private ITransactionManager _transactionManager;

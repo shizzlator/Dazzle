@@ -47,8 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\ConnectionHandler.cs" />
+    <Compile Include="Connection\DatabaseConnectionFactory.cs" />
     <Compile Include="Connection\SqlConnectionProvider.cs" />
     <Compile Include="Interfaces\IConnectionHandler.cs" />
+    <Compile Include="Interfaces\IDatabaseConnectionFactory.cs" />
     <Compile Include="Interfaces\IDatabaseReader.cs" />
     <Compile Include="Interfaces\IDatabaseReaderFactory.cs" />
     <Compile Include="Session\DatabaseSessionFactory.cs" />

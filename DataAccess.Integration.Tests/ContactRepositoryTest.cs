@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace DataAccess.Integration.Tests
 {
     //TO RUN this locally, execute the run the Sql Script in ExampleUsages/DBScript!!!
-    [TestFixture, Ignore]
+    [TestFixture]
     public class ContactRepositoryTest : TransactionalTestFixture
     {
         private int _contactId;

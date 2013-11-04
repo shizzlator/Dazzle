@@ -3,7 +3,7 @@ using DataAccess.Interfaces;
 
 namespace DataAccess
 {
-    public class SqlDatabaseReaderFactory : IDatabaseReaderFactory
+    internal class SqlDatabaseReaderFactory : IDatabaseReaderFactory
     {
         public IDatabaseReader CreateDataReader(IDataReader dataReader)
         {
