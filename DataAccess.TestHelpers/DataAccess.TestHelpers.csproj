@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{862A641A-C1FD-46D9-BBCA-573E9054925D}</ProjectGuid>
+    <ProjectGuid>{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataAccess</RootNamespace>
-    <AssemblyName>DataAccess</AssemblyName>
+    <RootNamespace>DataAccess.TestHelpers</RootNamespace>
+    <AssemblyName>DataAccess.TestHelpers</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -25,7 +24,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,52 +32,38 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection\ConnectionHandler.cs" />
-    <Compile Include="Connection\SqlConnectionProvider.cs" />
-    <Compile Include="Interfaces\IConnectionHandler.cs" />
-    <Compile Include="Interfaces\IDatabaseReader.cs" />
-    <Compile Include="Interfaces\IDatabaseReaderFactory.cs" />
-    <Compile Include="Session\DatabaseSessionFactory.cs" />
-    <Compile Include="Session\DatabaseSession.cs" />
-    <Compile Include="Query\DataParam.cs" />
-    <Compile Include="Query\DataQuery.cs" />
-    <Compile Include="Command\DatabaseCommandFactory.cs" />
-    <Compile Include="Command\DatabaseCommandProvider.cs" />
-    <Compile Include="Interfaces\IDatabaseSessionFactory.cs" />
-    <Compile Include="Interfaces\IDatabaseConnectionProvider.cs" />
-    <Compile Include="Interfaces\IDatabaseSession.cs" />
-    <Compile Include="Interfaces\IDataParam.cs" />
-    <Compile Include="Interfaces\IDataQuery.cs" />
-    <Compile Include="Interfaces\IDatabaseCommandFactory.cs" />
-    <Compile Include="Interfaces\IDatabaseCommandProvider.cs" />
-    <Compile Include="Interfaces\IRepositoryFactory.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\ITransactionManager.cs" />
-    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Query\QueryParameters.cs" />
-    <Compile Include="RepositoryFactory.cs" />
-    <Compile Include="SqlDatabaseReader.cs" />
-    <Compile Include="SqlDatabaseReaderFactory.cs" />
-    <Compile Include="TransactionManager.cs" />
-    <Compile Include="UnitOfWork.cs" />
+    <Compile Include="Stubs\DatabaseSessionFactoryStub.cs" />
+    <Compile Include="Stubs\DatabaseSessionStub.cs" />
+    <Compile Include="Stubs\DataParamStub.cs" />
+    <Compile Include="Stubs\DataQueryStub.cs" />
+    <Compile Include="Stubs\DataReaderStub.cs" />
+    <Compile Include="TransactionalTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DataAccess.nuspec" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{862A641A-C1FD-46D9-BBCA-573E9054925D}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="readme.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

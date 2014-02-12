@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E2526697
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleUsages", "ExampleUsages\ExampleUsages.csproj", "{99B06BC9-5015-4286-A95C-F3AB88D28D67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.TestHelpers", "DataAccess.TestHelpers\DataAccess.TestHelpers.csproj", "{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.tjgdev.ds:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -32,6 +34,9 @@ Global
 		SccProjectTopLevelParentUniqueName4 = DataAccess.sln
 		SccProjectName4 = ExampleUsages
 		SccLocalPath4 = ExampleUsages
+		SccProjectUniqueName5 = DataAccess.TestHelpers\\DataAccess.TestHelpers.csproj
+		SccProjectName5 = DataAccess.TestHelpers
+		SccLocalPath5 = DataAccess.TestHelpers
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +56,10 @@ Global
 		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99B06BC9-5015-4286-A95C-F3AB88D28D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

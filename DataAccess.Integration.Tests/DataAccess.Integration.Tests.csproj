@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccess.TestHelpers\DataAccess.TestHelpers.csproj">
+      <Project>{CABCFCE8-13DC-40EC-9A85-4744D4C8EA79}</Project>
+      <Name>DataAccess.TestHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{862A641A-C1FD-46D9-BBCA-573E9054925D}</Project>
       <Name>DataAccess</Name>

@@ -18,25 +18,30 @@ namespace DataAccess
             return _dataReader.FieldCount != 0 ? GetField<T>(fieldName) : default(T);
         }
 
-		public T GetOrDefault<T>(string fieldName)
-		{
-			return _dataReader.FieldCount != 0 ? GetField<T>(fieldName, true) : default(T);
-		}
+        public bool GetBool(string fieldName)
+        {
+            return _dataReader.GetBoolean(_dataReader.GetOrdinal(fieldName));
+        }
+
+        public T GetOrDefault<T>(string fieldName)
+        {
+            return _dataReader.FieldCount != 0 ? GetField<T>(fieldName, true) : default(T);
+        }
 
         private T GetField<T>(string fieldName, bool returnDefaultWhenDbNull = false)
         {
             var field = _dataReader[fieldName];
             if (field != null && !IsDBNull(GetOrdinal(fieldName)))
             {
-				if (returnDefaultWhenDbNull)
-				{
-					if (IsDBNull(GetOrdinal(fieldName)))
-					{
-						return default(T);
-					}
-				}
+                if (returnDefaultWhenDbNull)
+                {
+                    if (IsDBNull(GetOrdinal(fieldName)))
+                    {
+                        return default(T);
+                    }
+                }
 
-				return (T)field;
+                return (T)field;
             }
             return default(T);
         }

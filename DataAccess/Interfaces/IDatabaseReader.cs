@@ -7,6 +7,7 @@ namespace DataAccess.Interfaces
     {
         T Get<T>(string fieldName);
 		T GetOrDefault<T>(string fieldName);
+        bool GetBool(string fieldName);
         string GetName(int i);
         string GetDataTypeName(int i);
         Type GetFieldType(int i);
