@@ -7,7 +7,6 @@ If you want to run things within a transaction then you should use the UnitOfWor
 - Remember to call Commit()/Rollback() on the UnitOfWork when you are done. EVEN for selects (as it stands).
 - You could call Commit() on request end or by overriding OnActionExecuted or an equivalent event/method.
 - There is also a TransactionalTestFixture included for integration tests. Just inherit from it and override ConnectionString.
-- HAVE A LOOK AT THE SOURCE https://github.com/shizzlator/DataAccess
 
 
 EXAMPLE OF CONTROLLER (using RepositoryFactory) AND REPOSITORY (using DatabaseSession)
