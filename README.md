@@ -1,16 +1,3 @@
-Below is an example repository (also found in the library project). 
-It shows a few ways in which you can execute queries.
-
-If you want to run things within a transaction then you should use the UnitOfWork class:
-
-- This will wrap anything you do with a transaction - _unitOfWork.Repository<MyRepo>().MyMethod()
-- Remember to call Commit()/Rollback() on the UnitOfWork when you are done. EVEN for selects (as it stands).
-- You could call Commit() on request end or by overriding OnActionExecuted or an equivalent event/method.
-- There is also a TransactionalTestFixture included for integration tests. Just inherit from it and override ConnectionString.
-
-
-EXAMPLE OF CONTROLLER (using RepositoryFactory) AND REPOSITORY (using DatabaseSession)
-
 public class HomeController : Controller
 {
     private readonly IRepositoryFactory _repositoryFactory;
@@ -122,3 +109,14 @@ public class ContactRepository : IRepository
         }
     }
 }
+
+Example repository (also found in the library project). 
+It shows a few ways in which you can execute queries.
+
+If you want to run things within a transaction then you should use the UnitOfWork class:
+
+- This will wrap anything you do with a transaction - _unitOfWork.Repository<MyRepo>().MyMethod()
+- Remember to call Commit()/Rollback() on the UnitOfWork when you are done. EVEN for selects (as it stands).
+- You could call Commit() on request end or by overriding OnActionExecuted or an equivalent event/method.
+- There is also a TransactionalTestFixture included for integration tests. Just inherit from it and override ConnectionString.
+
