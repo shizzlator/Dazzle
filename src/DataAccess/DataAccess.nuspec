@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DataAccess</id>
+    <title>Data Access</title>
+    <version>$version$</version>
+    <authors>David Miranda</authors>
+    <owners>David Miranda</owners>
+    <iconUrl>file://S:/Development/nuget/data-access-icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple and Testable Data Access Layer</description>
+  </metadata>
+  <files>
+    <file src="readme.txt" target="" />
+  </files>
+</package>

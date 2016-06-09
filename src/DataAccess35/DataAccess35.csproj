@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{067CA8F1-37D4-42BE-8B4A-5C59007D531A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataAccess35</RootNamespace>
+    <AssemblyName>DataAccess35</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Command\DatabaseCommandFactory.cs" />
+    <Compile Include="Command\DatabaseCommandProvider.cs" />
+    <Compile Include="Connection\ConnectionHandler.cs" />
+    <Compile Include="Connection\SqlConnectionProvider.cs" />
+    <Compile Include="Interfaces\IConnectionHandler.cs" />
+    <Compile Include="Interfaces\IDatabaseCommandFactory.cs" />
+    <Compile Include="Interfaces\IDatabaseCommandProvider.cs" />
+    <Compile Include="Interfaces\IDatabaseConnectionProvider.cs" />
+    <Compile Include="Interfaces\IDatabaseReader.cs" />
+    <Compile Include="Interfaces\IDatabaseReaderFactory.cs" />
+    <Compile Include="Interfaces\IDatabaseSession.cs" />
+    <Compile Include="Interfaces\IDatabaseSessionFactory.cs" />
+    <Compile Include="Interfaces\IDataParam.cs" />
+    <Compile Include="Interfaces\IDataQuery.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IRepositoryFactory.cs" />
+    <Compile Include="Interfaces\ITransactionManager.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Interfaces\IUnitOfWorkFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\DataParam.cs" />
+    <Compile Include="Query\DataQuery.cs" />
+    <Compile Include="Query\QueryParameters.cs" />
+    <Compile Include="RepositoryFactory.cs" />
+    <Compile Include="Session\DatabaseSession.cs" />
+    <Compile Include="Session\DatabaseSessionFactory.cs" />
+    <Compile Include="SqlDatabaseReader.cs" />
+    <Compile Include="SqlDatabaseReaderFactory.cs" />
+    <Compile Include="Stubs\DatabaseSessionFactoryStub.cs" />
+    <Compile Include="Stubs\DatabaseSessionStub.cs" />
+    <Compile Include="Stubs\DataParamStub.cs" />
+    <Compile Include="Stubs\DataQueryStub.cs" />
+    <Compile Include="Stubs\DataReaderStub.cs" />
+    <Compile Include="TransactionManager.cs" />
+    <Compile Include="UnitOfWork.cs" />
+    <Compile Include="UnitOfWorkFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="DataAccess.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
